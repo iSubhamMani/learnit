@@ -10,7 +10,7 @@ const AuthGuard = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        router.replace("/dashboard/notebooks");
+        router.replace("/u/notebooks");
       } else {
         router.replace("/login");
       }

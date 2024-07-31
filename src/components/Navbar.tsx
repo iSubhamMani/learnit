@@ -6,7 +6,7 @@ const Navbar = () => {
   return (
     <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r border-base-200 md:flex shadow-md bg-base-100">
       <nav className="flex flex-col items-center gap-2 px-2 sm:py-5">
-        <Link href="/dashboard/notebooks">
+        <Link href="/u/notebooks">
           <div
             className="p-2 tooltip tooltip-right cursor-pointer rounded-md hover:bg-primary hover:bg-opacity-10"
             data-tip="Notebooks"
@@ -14,7 +14,7 @@ const Navbar = () => {
             <Notebook className="w-6 h-6 text-base-content" />
           </div>
         </Link>
-        <Link href="/dashboard/discuss">
+        <Link href="/u/discuss">
           <div
             className="p-2 tooltip tooltip-right cursor-pointer rounded-md hover:bg-primary hover:bg-opacity-10"
             data-tip="Discussion Board"
