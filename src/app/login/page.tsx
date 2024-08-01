@@ -16,7 +16,6 @@ const Login = () => {
         // The signed-in user info.
         //const user = result.user;
         toast.success("Login successful");
-        router.replace("/u/notebooks");
       })
       .catch(() => {
         toast.error("Error logging you in. Please try again later");
