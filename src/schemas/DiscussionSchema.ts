@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const questionSchema = z.object({
+export const discussionSchema = z.object({
   title: z
     .string()
     .max(150, { message: "Title should be less than 150 characters" })
