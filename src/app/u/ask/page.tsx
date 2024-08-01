@@ -2,7 +2,7 @@
 
 import TagInput from "@/components/TagInput";
 import useTagInput from "@/hooks/useTagInput";
-import { questionSchema, tagSchema } from "@/schemas/QuestionSchema";
+import { discussionSchema, tagSchema } from "@/schemas/DiscussionSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
@@ -12,7 +12,7 @@ const AskPage = () => {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(questionSchema),
+    resolver: zodResolver(discussionSchema),
     defaultValues: {
       title: "",
       description: "",
@@ -44,7 +44,9 @@ const AskPage = () => {
       <div className="mx-auto w-full max-w-4xl">
         <div className="card bg-base-100 w-full shadow-xl">
           <div className="card-body">
-            <h1 className="text-3xl text-base-content mb-4">Ask a question</h1>
+            <h1 className="text-3xl text-base-content mb-4">
+              Start a discussion
+            </h1>
             <form
               onSubmit={handleSubmit(onSubmit)}
               className="flex flex-col gap-6"
