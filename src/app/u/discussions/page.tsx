@@ -1,3 +1,4 @@
+import DiscussionCard from "@/components/DiscussionCard";
 import { MoveRight } from "lucide-react";
 import Link from "next/link";
 
@@ -21,18 +22,29 @@ const Discuss = () => {
             />
           </svg>
         </label>
-        <Link href="/u/ask">
-          <div className="px-4 py-2 w-max mt-6 flex gap-2 items-center rounded-full bg-primary bg-opacity-10 hover:bg-opacity-20 transition ease-in-out duration-200">
-            <p className="text-primary text-base font-medium">
-              Start a discussion
-            </p>
-            <MoveRight className="w-5 h-5 text-primary" />
-          </div>
-        </Link>
+        <div className="mt-6 flex justify-start">
+          <Link href="/u/ask">
+            <div className="px-4 py-2 w-max flex gap-2 items-center rounded-full bg-primary bg-opacity-10 hover:bg-opacity-20 transition ease-in-out duration-200">
+              <p className="text-primary text-base font-medium">
+                Start a discussion
+              </p>
+              <MoveRight className="w-5 h-5 text-primary" />
+            </div>
+          </Link>
+        </div>
       </div>
       <div className="mt-4 flex flex-col-reverse lg:flex-row md:justify-between">
         <div className="flex-1">
-          <h1 className="my-20">Questions</h1>
+          <div className="mt-6 md:mt-10 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+            <DiscussionCard />
+            <DiscussionCard />
+            <DiscussionCard />
+            <DiscussionCard />
+            <DiscussionCard />
+            <DiscussionCard />
+            <DiscussionCard />
+            <DiscussionCard />
+          </div>
         </div>
       </div>
     </div>
