@@ -14,7 +14,7 @@ const Navbar = () => {
             <Notebook className="w-6 h-6 text-base-content" />
           </div>
         </Link>
-        <Link href="/u/discuss">
+        <Link href="/u/discussions">
           <div
             className="p-2 tooltip tooltip-right cursor-pointer rounded-md hover:bg-primary hover:bg-opacity-10"
             data-tip="Discussion Board"
