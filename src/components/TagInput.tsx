@@ -20,7 +20,10 @@ const TagInput = ({
 }) => {
   return (
     <div className="flex flex-col gap-2">
-      <label className="text-base-content/85" htmlFor="tags">
+      <label
+        className="text-sm sm:text-base text-base-content/85"
+        htmlFor="tags"
+      >
         Tags
       </label>
       <input
@@ -28,7 +31,7 @@ const TagInput = ({
         id="tags"
         type="text"
         placeholder="You can add upto 3 tags"
-        className="text-base-content input input-bordered w-full"
+        className="text-sm sm:text-base text-base-content input input-bordered w-full"
         onChange={(e) => setInputValue(e.target.value)}
         onKeyDown={(e) => {
           if (e.key === " " || e.key === "Enter") {
