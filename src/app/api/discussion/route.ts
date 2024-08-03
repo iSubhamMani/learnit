@@ -51,3 +51,46 @@ export async function POST(req: NextRequest) {
     });
   }
 }
+
+export async function GET(req: NextRequest) {
+  await connectDB();
+
+  try {
+    const discussions = await DiscussionModel.aggregate([
+      {
+        $lookup: {
+          from: "users",
+          localField: "askedBy",
+          foreignField: "_id",
+          as: "askedBy",
+        },
+      },
+      {
+        $unwind: "$askedBy",
+      },
+      {
+        $project: {
+          title: 1,
+          description: 1,
+          tags: 1,
+          askedBy: {
+            _id: 1,
+            displayName: 1,
+            photoURL: 1,
+          },
+          createdAt: 1,
+          updatedAt: 1,
+        },
+      },
+    ]);
+
+    return NextResponse.json(
+      new ApiSuccess(200, "Discussions fetched successfully", discussions),
+      { status: 200 }
+    );
+  } catch (error) {
+    return NextResponse.json(new ApiError(500, "Internal Server Error"), {
+      status: 500,
+    });
+  }
+}
