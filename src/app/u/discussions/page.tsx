@@ -1,8 +1,34 @@
+"use client";
+
 import DiscussionCard from "@/components/DiscussionCard";
+import { DiscussionData } from "@/interfaces/discussion.interface";
+import axios from "axios";
 import { MoveRight } from "lucide-react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
-const Discuss = () => {
+const Discussions = () => {
+  const [discussions, setDiscussions] = useState<DiscussionData[]>([]);
+
+  useEffect(() => {
+    async function fetchDiscussions() {
+      try {
+        const response = await axios.get("/api/discussion", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("learnit-token")}`,
+          },
+        });
+        if (response.data.success) {
+          setDiscussions(response.data.data);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    fetchDiscussions();
+  }, []);
+
   return (
     <div className="px-5 md:pl-24 py-8 w-full flex flex-col bg-base-200">
       <h1 className="text-2xl text-base-content">Discussion Board</h1>
@@ -36,14 +62,9 @@ const Discuss = () => {
       <div className="mt-4 flex flex-col-reverse lg:flex-row md:justify-between">
         <div className="flex-1">
           <div className="mt-6 md:mt-10 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
-            <DiscussionCard />
-            <DiscussionCard />
-            <DiscussionCard />
-            <DiscussionCard />
-            <DiscussionCard />
-            <DiscussionCard />
-            <DiscussionCard />
-            <DiscussionCard />
+            {discussions.map((discussion) => (
+              <DiscussionCard key={discussion._id} discussion={discussion} />
+            ))}
           </div>
         </div>
       </div>
@@ -51,4 +72,4 @@ const Discuss = () => {
   );
 };
 
-export default Discuss;
+export default Discussions;
