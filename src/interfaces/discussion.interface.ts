@@ -1,3 +1,5 @@
+import { User } from "./user.interface";
+
 export interface Discussion {
   title: string;
   description: string;
@@ -6,6 +8,13 @@ export interface Discussion {
 }
 
 export type DiscussionData = Pick<
+  Discussion,
+  "title" | "description" | "tags"
+> & {
+  askedBy: User;
+};
+
+export type DiscussionCardData = Pick<
   Discussion,
   "title" | "description" | "tags"
 > & {
