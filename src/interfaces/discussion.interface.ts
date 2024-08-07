@@ -12,6 +12,8 @@ export type DiscussionData = Pick<
   "title" | "description" | "tags"
 > & {
   askedBy: User;
+  createdAt: Date;
+  updatedAt: Date;
 };
 
 export type DiscussionCardData = Pick<
