@@ -40,5 +40,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/api/discussion/:path*"],
+  matcher: ["/api/discussion/:path*", "/api/reply/:path*"],
 };
