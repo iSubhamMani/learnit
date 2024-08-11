@@ -8,7 +8,7 @@ import Link from "next/link";
 
 const DiscussionCard = ({ discussion }: { discussion: DiscussionCardData }) => {
   return (
-    <Link href={`/d/${discussion._id}`}>
+    <Link href={`/u/d/${discussion._id}`}>
       <div className="w-full max-w-xl card bg-base-100 shadow-md rounded-md">
         <div className="card-body p-4 sm:p-6 md:p-8">
           <div className="card-title">
