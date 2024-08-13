@@ -2,11 +2,12 @@
 
 import { LoaderCircle, RotateCcw, Send } from "lucide-react";
 import { useInfiniteQuery, useMutation, useQueryClient } from "react-query";
-import Reply from "./reply";
+import Reply from "./Reply";
 import { ReplyData } from "@/interfaces/reply.interface";
 import { addReply, getReplies } from "@/queries/replies.queries";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import toast from "react-hot-toast";
+import ReplyInput from "./ReplyInput";
 
 const RepliesSection = ({ discussionId }: { discussionId: string }) => {
   const [content, setContent] = useState<string>("");
@@ -54,6 +55,14 @@ const RepliesSection = ({ discussionId }: { discussionId: string }) => {
     mutate({ discussionId, content });
   };
 
+  const calculateTotalReplies = useCallback(() => {
+    let totalReplies = 0;
+    replies?.pages.map((group, i) => {
+      totalReplies += group.data.data.length;
+    });
+    return totalReplies;
+  }, [replies]);
+
   if (isLoading)
     return (
       <div className="mt-4 flex justify-center">
@@ -70,27 +79,15 @@ const RepliesSection = ({ discussionId }: { discussionId: string }) => {
 
   return (
     <>
-      <div className="mb-4 flex items-center gap-3">
-        <input
-          onChange={(e) => setContent(e.target.value)}
-          value={content}
-          type="text"
-          placeholder="Reply to this discussion"
-          className="input input-bordered w-full"
-        />
-        <button
-          disabled={isReplyLoading}
-          onClick={sendReply}
-          className="btn-sm md:btn-md btn btn-circle"
-        >
-          {isReplyLoading ? (
-            <LoaderCircle className="text-primary animate-spin w-5 h-5" />
-          ) : (
-            <Send className="text-base-content w-4 h-4 md:w-5 md:h-5" />
-          )}
-        </button>
-      </div>
-      <h1 className="text-xl text-primary font-medium">Replies</h1>
+      <ReplyInput
+        isReplyLoading={isReplyLoading}
+        onClickAction={sendReply}
+        stateValue={content}
+        stateAction={setContent}
+      />
+      <h1 className="border-t border-base-content/35 mt-4 mb-6 pt-2 text-xl text-primary font-medium">
+        <span>{calculateTotalReplies()}</span> Replies
+      </h1>
       <div className="flex flex-col gap-4 mt-4">
         {replies?.pages.map((group, i) => {
           return group.data.data.map((reply: ReplyData) => (
