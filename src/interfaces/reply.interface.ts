@@ -16,6 +16,7 @@ export type ReplyData = Pick<Reply, "content" | "likes" | "dislikes"> & {
     photoURL: string;
     reputation: number;
   };
+  replyCount: number;
   createdAt: Date;
   updatedAt: Date;
 };

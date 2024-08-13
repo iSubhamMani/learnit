@@ -76,10 +76,15 @@ const Reply = ({ reply }: { reply: ReplyData }) => {
             onClick={() => setReplyInputVisible(!replyInputVisible)}
             className="hover:text-primary cursor-pointer text-base-content w-4 h-4 sm:w-5 sm:h-5"
           />
-          <MessageCircle
-            onClick={() => setReplySection(!replySection)}
-            className="hover:text-primary cursor-pointer text-base-content w-4 h-4 sm:w-5 sm:h-5"
-          />
+          <div className="flex gap-1 items-center">
+            <span className="text-sm text-base-content">
+              {reply.replyCount}
+            </span>
+            <MessageCircle
+              onClick={() => setReplySection(!replySection)}
+              className="hover:text-primary cursor-pointer text-base-content w-4 h-4 sm:w-5 sm:h-5"
+            />
+          </div>
         </div>
         {replyInputVisible && (
           <div className="mt-2">

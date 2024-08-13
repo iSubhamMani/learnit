@@ -112,6 +112,19 @@ export async function GET(req: NextRequest) {
               },
             },
             {
+              $lookup: {
+                from: "replies",
+                localField: "_id",
+                foreignField: "replyId",
+                as: "replies",
+              },
+            },
+            {
+              $addFields: {
+                replyCount: { $size: "$replies" },
+              },
+            },
+            {
               $unwind: "$repliedBy",
             },
           ],
