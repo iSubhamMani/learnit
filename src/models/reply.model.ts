@@ -6,7 +6,10 @@ const replySchema: Schema<Reply> = new Schema<Reply>(
     discussionId: {
       type: Schema.Types.ObjectId,
       ref: "Discussion",
-      required: true,
+    },
+    replyId: {
+      type: Schema.Types.ObjectId,
+      ref: "Reply",
     },
     repliedBy: {
       type: Schema.Types.String,

@@ -1,7 +1,8 @@
 import { Schema } from "mongoose";
 
 export interface Reply {
-  discussionId: Schema.Types.ObjectId;
+  discussionId?: Schema.Types.ObjectId;
+  replyId?: Schema.Types.ObjectId;
   repliedBy: Schema.Types.String;
   content: string;
   likes: string[];
