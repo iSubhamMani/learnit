@@ -1,6 +1,5 @@
 import { connectDB } from "@/lib/db";
 import { ReplyModel } from "@/models/reply.model";
-import { UserModel } from "@/models/user.model";
 import { ApiError } from "@/utils/ApiError";
 import { ApiSuccess } from "@/utils/ApiSuccess";
 import mongoose from "mongoose";
@@ -18,13 +17,38 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    const { content, discussionId } = await req.json();
+    const { content, discussionId, replyId } = await req.json();
 
-    const reply = await ReplyModel.create({
-      content,
-      discussionId,
-      repliedBy: userId,
-    });
+    if (!discussionId && !replyId) {
+      return NextResponse.json(
+        new ApiError(400, "Discussion ID or Reply ID is required"),
+        {
+          status: 400,
+        }
+      );
+    }
+
+    if (!content) {
+      return NextResponse.json(new ApiError(400, "Content is required"), {
+        status: 400,
+      });
+    }
+
+    let reply;
+
+    if (discussionId) {
+      reply = await ReplyModel.create({
+        content,
+        discussionId,
+        repliedBy: userId,
+      });
+    } else {
+      reply = await ReplyModel.create({
+        content,
+        replyId,
+        repliedBy: userId,
+      });
+    }
 
     if (!reply) {
       return NextResponse.json(new ApiError(400, "Reply not created"), {
@@ -46,19 +70,28 @@ export async function GET(req: NextRequest) {
   try {
     const url = new URL(req.url);
     const discussionId = url.searchParams.get("discussionId");
+    const replyId = url.searchParams.get("replyId");
     const page = parseInt(url.searchParams.get("page") as string);
     const pageSize = 10;
 
-    if (!discussionId) {
-      return NextResponse.json(new ApiError(400, "Discussion ID is required"), {
-        status: 400,
-      });
+    if (!discussionId && !replyId) {
+      return NextResponse.json(
+        new ApiError(400, "Discussion ID or Reply ID is required"),
+        {
+          status: 400,
+        }
+      );
     }
+
+    const id = (discussionId || replyId) as string;
 
     const replies = await ReplyModel.aggregate([
       {
         $match: {
-          discussionId: new mongoose.Types.ObjectId(discussionId),
+          $or: [
+            { discussionId: new mongoose.Types.ObjectId(id) },
+            { replyId: new mongoose.Types.ObjectId(id) },
+          ],
         },
       },
       {
