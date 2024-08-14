@@ -99,7 +99,9 @@ const Reply = ({ reply }: { reply: ReplyData }) => {
           </div>
         )}
       </div>
-      {replySection && <RepliesToReply replyId={replyId} />}
+      {replySection && reply.replyCount > 0 && (
+        <RepliesToReply replyId={replyId} />
+      )}
     </div>
   );
 };
