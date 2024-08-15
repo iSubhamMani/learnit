@@ -7,9 +7,13 @@ export interface Reply {
   content: string;
   likes: string[];
   dislikes: string[];
+  status: "posted" | "deleted" | "edited";
 }
 
-export type ReplyData = Pick<Reply, "content" | "likes" | "dislikes"> & {
+export type ReplyData = Pick<
+  Reply,
+  "content" | "likes" | "dislikes" | "discussionId" | "replyId" | "status"
+> & {
   _id: string;
   repliedBy: {
     displayName: string;

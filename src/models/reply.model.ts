@@ -30,6 +30,10 @@ const replySchema: Schema<Reply> = new Schema<Reply>(
       ref: "User",
       default: [],
     },
+    status: {
+      type: String,
+      default: "posted",
+    },
   },
   { timestamps: true }
 );
