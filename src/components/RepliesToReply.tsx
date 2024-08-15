@@ -3,8 +3,15 @@ import { LoaderCircle, RotateCcw } from "lucide-react";
 import { useInfiniteQuery } from "react-query";
 import Reply from "./Reply";
 import { ReplyData } from "@/interfaces/reply.interface";
+import { useEffect } from "react";
 
-const RepliesToReply = ({ replyId }: { replyId: string }) => {
+const RepliesToReply = ({
+  replyId,
+  action,
+}: {
+  replyId: string;
+  action: any;
+}) => {
   const {
     fetchNextPage,
     hasNextPage,
@@ -23,6 +30,10 @@ const RepliesToReply = ({ replyId }: { replyId: string }) => {
     },
     staleTime: 1000 * 60 * 5,
   });
+
+  useEffect(() => {
+    action(replies?.pages[0].data.metadata.totalCount);
+  }, [replies]);
 
   if (isLoading)
     return (
