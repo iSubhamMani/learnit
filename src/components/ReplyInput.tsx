@@ -22,7 +22,7 @@ const ReplyInput = ({
         value={stateValue}
         type="text"
         placeholder={placeholder}
-        className={`input input-bordered w-full input-${size}`}
+        className={`text-base-content input input-bordered w-full input-${size}`}
       />
       <button
         disabled={isReplyLoading}
