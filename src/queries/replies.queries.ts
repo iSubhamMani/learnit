@@ -39,3 +39,32 @@ export async function addReply({
   });
   return response.data.data;
 }
+
+export async function deleteReply({ replyId }: { replyId: string }) {
+  const response = await axios.delete(`/api/reply/${replyId}`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("learnit-token")}`,
+    },
+  });
+  return response.data.data;
+}
+
+export async function editReply({
+  replyId,
+  content,
+}: {
+  replyId: string;
+  content: string;
+}) {
+  const response = await axios.patch(
+    `/api/reply/${replyId}`,
+    { content },
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("learnit-token")}`,
+      },
+    }
+  );
+
+  return response.data.data;
+}
