@@ -55,14 +55,6 @@ const RepliesSection = ({ discussionId }: { discussionId: string }) => {
     mutate({ discussionId, content });
   };
 
-  const calculateTotalReplies = useCallback(() => {
-    let totalReplies = 0;
-    replies?.pages.map((group, i) => {
-      totalReplies += group.data.data.length;
-    });
-    return totalReplies;
-  }, [replies]);
-
   if (isLoading)
     return (
       <div className="mt-4 flex justify-center">
@@ -86,7 +78,7 @@ const RepliesSection = ({ discussionId }: { discussionId: string }) => {
         stateAction={setContent}
       />
       <h1 className="border-t border-base-content/35 mt-4 mb-6 pt-2 text-xl text-primary font-medium">
-        <span>{calculateTotalReplies()}</span> Replies
+        <span>{replies?.pages[0].data.metadata.totalCount}</span> Replies
       </h1>
       <div className="flex flex-col gap-4 mt-4">
         {replies?.pages.map((group, i) => {
