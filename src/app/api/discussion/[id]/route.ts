@@ -11,6 +11,13 @@ export async function GET(req: NextRequest) {
   try {
     const url = new URL(req.url);
     const id = url.pathname.split("/")[3];
+    const userId = req.headers.get("user-id");
+
+    if (!userId) {
+      return NextResponse.json(new ApiError(401, "Unauthorized"), {
+        status: 401,
+      });
+    }
 
     const discussion = await DiscussionModel.findById(id).populate({
       path: "askedBy",
@@ -18,8 +25,28 @@ export async function GET(req: NextRequest) {
       select: "displayName photoURL _id reputation",
     });
 
+    if (!discussion) {
+      return NextResponse.json(new ApiError(404, "Discussion not found"), {
+        status: 404,
+      });
+    }
+
+    let userReaction = null;
+
+    if (discussion) {
+      if (discussion.likes.includes(userId)) {
+        userReaction = "like";
+      } else if (discussion.dislikes.includes(userId)) {
+        userReaction = "dislike";
+      }
+    }
+
     return NextResponse.json(
-      new ApiSuccess(200, "Discussion fetched successfully", discussion),
+      new ApiSuccess(200, "Discussion fetched successfully", {
+        discussion,
+        userReaction,
+        reactionCount: discussion.likes.length - discussion.dislikes.length,
+      }),
       { status: 200 }
     );
   } catch (error) {
