@@ -3,7 +3,7 @@
 import RepliesSection from "@/components/RepliesSection";
 import Tag from "@/components/Tag";
 import { getDiscussion } from "@/queries/discussion.queries";
-import { dislikeDiscussion, likeDiscussion } from "@/queries/votes.queries";
+import { dislikeDiscussion, likeDiscussion } from "@/queries/reaction.queries";
 import { convertDateTime } from "@/utils/convertDateTime";
 import {
   ArrowLeft,
