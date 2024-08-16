@@ -27,6 +27,16 @@ const discussionSchema: Schema<Discussion> = new Schema<Discussion>(
       ref: "User",
       required: true,
     },
+    likes: {
+      type: [Schema.Types.String],
+      ref: "User",
+      default: [],
+    },
+    dislikes: {
+      type: [Schema.Types.String],
+      ref: "User",
+      default: [],
+    },
   },
   { timestamps: true }
 );

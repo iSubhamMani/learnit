@@ -5,6 +5,8 @@ export interface Discussion {
   description: string;
   tags: string[];
   askedBy: string;
+  likes: string[];
+  dislikes: string[];
 }
 
 export type DiscussionData = Pick<
