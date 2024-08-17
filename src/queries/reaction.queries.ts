@@ -15,3 +15,19 @@ export const dislikeDiscussion = async (id: string) => {
     },
   });
 };
+
+export const likeReply = async (id: string) => {
+  await axios.patch(`/api/reply/like/${id}`, null, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("learnit-token")}`,
+    },
+  });
+};
+
+export const dislikeReply = async (id: string) => {
+  await axios.patch(`/api/reply/dislike/${id}`, null, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("learnit-token")}`,
+    },
+  });
+};
