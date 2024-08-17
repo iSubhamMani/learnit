@@ -69,6 +69,7 @@ export async function GET(req: NextRequest) {
 
   try {
     const url = new URL(req.url);
+    const userId = req.headers.get("user-id");
     const discussionId = url.searchParams.get("discussionId");
     const replyId = url.searchParams.get("replyId");
     const page = parseInt(url.searchParams.get("page") as string);
@@ -122,6 +123,24 @@ export async function GET(req: NextRequest) {
             {
               $addFields: {
                 replyCount: { $size: "$replies" },
+                userReaction: {
+                  $cond: [
+                    { $in: [userId!, "$likes"] },
+                    "like",
+                    {
+                      $cond: [
+                        {
+                          $in: [userId!, "$dislikes"],
+                        },
+                        "dislike",
+                        null,
+                      ],
+                    },
+                  ],
+                },
+                reactionCount: {
+                  $subtract: [{ $size: "$likes" }, { $size: "$dislikes" }],
+                },
               },
             },
             {
