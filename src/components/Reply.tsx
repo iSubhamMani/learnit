@@ -1,21 +1,22 @@
 import { ReplyData } from "@/interfaces/reply.interface";
 import { convertDateTime } from "@/utils/convertDateTime";
 import {
-  ArrowDown,
-  ArrowUp,
+  LoaderCircle,
   MessageCircle,
   Pencil,
   ReplyIcon,
+  ThumbsDown,
+  ThumbsUp,
   Trash2,
 } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import ReplyInput from "./ReplyInput";
-import { useMutation, useQueryClient } from "react-query";
-import { addReply, deleteReply } from "@/queries/replies.queries";
 import RepliesToReply from "./RepliesToReply";
-import toast from "react-hot-toast";
 import ReplyEdit from "./ReplyEdit";
+import useReplyReactions from "@/hooks/useReplyReactions";
+import useReplyActions from "@/hooks/useReplyActions";
+import ReplyDeleteModal from "./ReplyDeleteModal";
 
 const Reply = ({ reply }: { reply: ReplyData }) => {
   const replyId = reply._id;
@@ -25,45 +26,24 @@ const Reply = ({ reply }: { reply: ReplyData }) => {
   const [replyContent, setReplyContent] = useState<string>("");
   const [replySection, setReplySection] = useState<boolean>(false);
   const [replyCount, setReplyCount] = useState(reply.replyCount);
+  const [deleteModalVisible, setDeleteModalVisible] = useState<boolean>(false);
 
-  const queryClient = useQueryClient();
+  const { mutateAdd, isReplyLoading, mutateDelete, isDeleting } =
+    useReplyActions(
+      reply,
+      setReplyContent,
+      setReplyInputVisible,
+      setReplySection
+    );
+  const { mutateLike, mutateDislike } = useReplyReactions(reply);
 
-  const { mutate, isLoading: isReplyLoading } = useMutation({
-    mutationFn: addReply,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["replies", { replyId }],
-        exact: true,
-      });
-      setReplyContent("");
-      setReplyInputVisible(false);
-      setReplySection(true);
-    },
-    onError: () => {
-      toast.error("Error sending reply", {
-        duration: 3000,
-        position: "top-center",
-      });
-    },
-  });
+  const handleLike = () => {
+    mutateLike(replyId);
+  };
 
-  const { mutate: mutateDelete, isLoading: isDeleting } = useMutation({
-    mutationFn: deleteReply,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: reply.discussionId
-          ? ["replies", { discussionId: reply.discussionId }]
-          : ["replies", { replyId: reply.replyId }],
-        exact: true,
-      });
-    },
-    onError: () => {
-      toast.error("Error deleting reply", {
-        duration: 3000,
-        position: "top-center",
-      });
-    },
-  });
+  const handleDislike = () => {
+    mutateDislike(replyId);
+  };
 
   const handleDeleteReply = async () => {
     mutateDelete({ replyId });
@@ -71,7 +51,7 @@ const Reply = ({ reply }: { reply: ReplyData }) => {
 
   const sendReply = async () => {
     if (!replyContent.trim()) return;
-    mutate({ replyId, content: replyContent });
+    mutateAdd({ replyId, content: replyContent });
   };
 
   return (
@@ -111,13 +91,30 @@ const Reply = ({ reply }: { reply: ReplyData }) => {
             {reply.content}
           </p>
         </div>
-        <div className="flex justify-between mt-4">
+        <div className="flex justify-between mt-4 items-center">
           <div className="flex gap-4 items-center">
             {reply.status !== "deleted" && (
               <>
                 <div className="flex items-center gap-2">
-                  <ArrowUp className="hover:text-primary cursor-pointer text-base-content w-4 h-4 sm:w-5 sm:h-5" />
-                  <ArrowDown className="hover:text-red-400 cursor-pointer text-base-content w-4 h-4 sm:w-5 sm:h-5" />
+                  <span className="text-xs sm:text-sm text-base-content">
+                    {reply.reactionCount}
+                  </span>
+                  <ThumbsUp
+                    onClick={handleLike}
+                    className={`hover:text-primary cursor-pointer ${
+                      reply.userReaction === "like"
+                        ? "text-primary"
+                        : "text-base-content"
+                    } w-4 h-4 sm:w-5 sm:h-5`}
+                  />
+                  <ThumbsDown
+                    onClick={handleDislike}
+                    className={`hover:text-red-400 cursor-pointer ${
+                      reply.userReaction === "dislike"
+                        ? "text-error"
+                        : "text-base-content"
+                    } w-4 h-4 sm:w-5 sm:h-5`}
+                  />
                 </div>
                 <ReplyIcon
                   onClick={() => {
@@ -137,7 +134,7 @@ const Reply = ({ reply }: { reply: ReplyData }) => {
             </div>
           </div>
           {reply.status !== "deleted" && (
-            <div className="flex gap-3">
+            <div className="flex gap-3 items-center">
               <Pencil
                 onClick={() => {
                   setReplyEditVisible(!replyEditVisible);
@@ -145,10 +142,19 @@ const Reply = ({ reply }: { reply: ReplyData }) => {
                 }}
                 className="hover:text-primary cursor-pointer text-base-content w-4 h-4 sm:w-5 sm:h-5"
               />
-              <Trash2
-                onClick={handleDeleteReply}
-                className="hover:text-red-400 cursor-pointer text-base-content w-4 h-4 sm:w-5 sm:h-5"
-              />
+              <div className="relative">
+                {deleteModalVisible && (
+                  <ReplyDeleteModal
+                    isDeleting={isDeleting}
+                    handleDeleteReply={handleDeleteReply}
+                    setDeleteModalVisible={setDeleteModalVisible}
+                  />
+                )}
+                <Trash2
+                  onClick={() => setDeleteModalVisible(true)}
+                  className="hover:text-red-400 cursor-pointer text-base-content w-4 h-4 sm:w-5 sm:h-5"
+                />
+              </div>
             </div>
           )}
         </div>
