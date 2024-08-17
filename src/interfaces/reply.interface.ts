@@ -23,4 +23,6 @@ export type ReplyData = Pick<
   replyCount: number;
   createdAt: Date;
   updatedAt: Date;
+  userReaction: string;
+  reactionCount: number;
 };
