@@ -31,3 +31,19 @@ body {
     text-wrap: balance;
   }
 }
+
+.animate-popup {
+  /* ... other styles ... */
+  animation: popupShow 0.2s ease-in-out;
+}
+
+@keyframes popupShow {
+  0% {
+    transform: scale(0.8) translateX(50%);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1) translateX(0%);
+    opacity: 1;
+  }
+}
