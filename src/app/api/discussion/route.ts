@@ -1,28 +1,62 @@
 import { connectDB } from "@/lib/db";
 import { DiscussionModel } from "@/models/discussion.model";
-import { discussionSchema } from "@/schemas/DiscussionSchema";
+import { discussionSchema, tagSchema } from "@/schemas/DiscussionSchema";
 import { newDiscussion } from "@/types/DiscussionRequestBody";
 import { ApiError } from "@/utils/ApiError";
 import { ApiSuccess } from "@/utils/ApiSuccess";
+import { uploadToCloudinary } from "@/lib/cloudinary/uploadToCloudinary";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   await connectDB();
 
   try {
-    const { title, description, tags } = (await req.json()) as newDiscussion;
+    const formData = await req.formData();
     const userId = req.headers.get("user-id");
+    const title = formData.get("title");
+    const description = formData.get("description");
+    const tags = JSON.parse(formData.get("tags") as string);
+    const attachment = formData.get("attachment") as File | null;
 
     const { success } = discussionSchema.safeParse({
       title,
       description,
-      tags,
     });
 
-    if (!success) {
+    const { success: tagSuccess } = tagSchema.safeParse(tags);
+
+    if (!success || !tagSuccess) {
       return NextResponse.json(new ApiError(400, "Invalid request body"), {
         status: 400,
       });
+    }
+
+    // upload attachment to cloudinary
+
+    let attachmentUrl = null;
+
+    if (attachment) {
+      const fileBuffer = await attachment.arrayBuffer();
+
+      const mimeType = attachment.type;
+      const encoding = "base64";
+      const base64Data = Buffer.from(fileBuffer).toString("base64");
+
+      // this will be used to upload the file
+      const fileUri = "data:" + mimeType + ";" + encoding + "," + base64Data;
+
+      const res = await uploadToCloudinary(fileUri, attachment.name);
+
+      if (!res) {
+        return NextResponse.json(
+          new ApiError(500, "Failed to upload attachment"),
+          {
+            status: 500,
+          }
+        );
+      }
+
+      attachmentUrl = res.secure_url;
     }
 
     const newDiscussion = await DiscussionModel.create({
@@ -30,6 +64,7 @@ export async function POST(req: NextRequest) {
       description,
       tags,
       askedBy: userId,
+      attachment: attachmentUrl,
     });
 
     if (!newDiscussion) {
@@ -42,11 +77,11 @@ export async function POST(req: NextRequest) {
     }
 
     return NextResponse.json(
-      new ApiSuccess(201, "Discussion created successfully", newDiscussion),
+      new ApiSuccess(201, "Discussion created successfully", null),
       { status: 201 }
     );
-  } catch (error) {
-    return NextResponse.json(new ApiError(500, "Internal Server Error"), {
+  } catch (error: any) {
+    return NextResponse.json(new ApiError(500, error.message), {
       status: 500,
     });
   }
