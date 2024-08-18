@@ -5,17 +5,13 @@ import Tag from "@/components/Tag";
 import { getDiscussion } from "@/queries/discussion.queries";
 import { dislikeDiscussion, likeDiscussion } from "@/queries/reaction.queries";
 import { convertDateTime } from "@/utils/convertDateTime";
-import {
-  ArrowLeft,
-  LoaderCircle,
-  Pencil,
-  ThumbsDown,
-  ThumbsUp,
-} from "lucide-react";
+import { ArrowLeft, LoaderCircle, ThumbsDown, ThumbsUp } from "lucide-react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { useMutation, useQuery, useQueryClient } from "react-query";
+import { CldImage } from "next-cloudinary";
+import Image from "next/image";
 
 const DiscussionPage = () => {
   const router = useRouter();
@@ -162,14 +158,6 @@ const DiscussionPage = () => {
               <Tag key={tag} value={tag} onClickHandler={undefined} />
             ))}
           </div>
-          <div className="mt-4 flex justify-end">
-            <Link href="/u/ask">
-              <div className="flex gap-2 items-center text-primary font-medium">
-                <span>Edit</span>
-                <Pencil className="w-4 h-4" />
-              </div>
-            </Link>
-          </div>
         </div>
         <div className="flex flex-col gap-1 sm:flex-row sm:items-center justify-between mt-3">
           <p className="text-base-content text-sm">
@@ -183,7 +171,7 @@ const DiscussionPage = () => {
           </p>
         </div>
         <div className="flex mt-6 gap-4">
-          <div className="flex flex-col items-center gap-2">
+          <div className="flex flex-col items-center justify-start gap-2">
             <button
               onClick={handleLike}
               className="btn btn-circle btn-sm md:btn-md
@@ -218,6 +206,17 @@ const DiscussionPage = () => {
             <p className="text-lg text-base-content font-medium">
               {data?.discussion?.description}
             </p>
+            {data?.discussion?.attachment && (
+              <div className="overflow-hidden rounded-md relative inset-0 mt-4">
+                <CldImage
+                  src={data?.discussion.attachment}
+                  alt="attachment"
+                  width={600}
+                  height={600}
+                  sizes="100vw"
+                />
+              </div>
+            )}
           </div>
         </div>
         <div className="mt-8 pt-4 border-t border-base-content/35">
