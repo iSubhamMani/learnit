@@ -37,6 +37,9 @@ const discussionSchema: Schema<Discussion> = new Schema<Discussion>(
       ref: "User",
       default: [],
     },
+    attachment: {
+      type: String,
+    },
   },
   { timestamps: true }
 );

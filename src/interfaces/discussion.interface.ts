@@ -7,11 +7,12 @@ export interface Discussion {
   askedBy: string;
   likes: string[];
   dislikes: string[];
+  attachment?: string | null;
 }
 
 export type DiscussionData = Pick<
   Discussion,
-  "title" | "description" | "tags"
+  "title" | "description" | "tags" | "attachment"
 > & {
   askedBy: User;
   createdAt: Date;
