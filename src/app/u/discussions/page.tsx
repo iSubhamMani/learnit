@@ -1,14 +1,14 @@
 "use client";
 
 import DiscussionCard from "@/components/DiscussionCard";
-import { DiscussionData } from "@/interfaces/discussion.interface";
+import { DiscussionCardData } from "@/interfaces/discussion.interface";
 import axios from "axios";
 import { MoveRight } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const Discussions = () => {
-  const [discussions, setDiscussions] = useState<DiscussionData[]>([]);
+  const [discussions, setDiscussions] = useState<DiscussionCardData[]>([]);
 
   useEffect(() => {
     async function fetchDiscussions() {
