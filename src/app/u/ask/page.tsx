@@ -6,7 +6,7 @@ import { discussionSchema, tagSchema } from "@/schemas/DiscussionSchema";
 import { SERVER_ERROR_MESSAGE } from "@/utils/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
-import { LoaderCircle } from "lucide-react";
+import { ArrowLeft, LoaderCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -23,6 +23,7 @@ const AskPage = () => {
     defaultValues: {
       title: "",
       description: "",
+      attachment: null,
     },
   });
 
@@ -54,8 +55,18 @@ const AskPage = () => {
   ) {
     setSubmitting(true);
 
+    const formData = new FormData();
+    formData.set("title", discussionData.title);
+    formData.set("description", discussionData.description);
+
+    if (discussionData.attachment) {
+      formData.set("attachment", discussionData.attachment[0]);
+    }
+
+    formData.set("tags", JSON.stringify(discussionData.tags));
+
     try {
-      const response = await axios.post("/api/discussion", discussionData, {
+      const response = await axios.post("/api/discussion", formData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("learnit-token")}`,
         },
@@ -87,6 +98,14 @@ const AskPage = () => {
 
   return (
     <div className="px-5 md:pl-24 py-8 w-full flex flex-col bg-base-200">
+      <div className="mb-4">
+        <button
+          onClick={() => router.back()}
+          className="btn btn-sm sm:btn-md btn-circle"
+        >
+          <ArrowLeft className="text-base-content w-5 h-5 sm:w-6 sm:h-6" />
+        </button>
+      </div>
       <div className="mx-auto w-full max-w-4xl">
         <div className="card bg-base-100 w-full shadow-xl">
           <div className="card-body p-4 sm:p-6 md:p-8">
@@ -141,6 +160,24 @@ const AskPage = () => {
                 ></textarea>
                 <p className="text-sm text-error font-medium">
                   {errors.description?.message}
+                </p>
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <label
+                  className="text-sm sm:text-base text-base-content/85"
+                  htmlFor="attachment"
+                >
+                  Attachment
+                </label>
+                <input
+                  id="attachment"
+                  {...register("attachment")}
+                  type="file"
+                  className="text-base-content file-input-sm md:file-input-md file-input file-input-bordered file-input-primary w-full max-w-xs"
+                />
+                <p className="text-sm text-error font-medium">
+                  {errors.attachment?.message}
                 </p>
               </div>
 
