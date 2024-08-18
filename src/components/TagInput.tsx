@@ -37,7 +37,10 @@ const TagInput = ({
           if (e.key === " " || e.key === "Enter") {
             e.preventDefault();
             if (tags.length === 3) return;
-            if (inputValue.trim()) {
+            if (
+              inputValue.trim() &&
+              !tags.includes(inputValue.trim().toLowerCase())
+            ) {
               setTagError(undefined);
               setTags([...tags, inputValue.trim().toLowerCase()]);
               setInputValue("");
