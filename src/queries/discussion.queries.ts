@@ -9,3 +9,22 @@ export async function getDiscussion(id: string) {
 
   return res.data.data;
 }
+
+export async function getAllDiscussions({
+  pageParam = 1,
+  filter = "",
+}: {
+  pageParam: number;
+  filter: string;
+}) {
+  const res = await axios.get(
+    `/api/discussion?page=${pageParam}&filter=${filter}`,
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("learnit-token")}`,
+      },
+    }
+  );
+
+  return res.data;
+}
