@@ -1,40 +1,53 @@
 "use client";
 
 import DiscussionCard from "@/components/DiscussionCard";
+import DiscussionCardSkeleton from "@/components/DiscussionCardSkeleton";
 import { DiscussionCardData } from "@/interfaces/discussion.interface";
-import axios from "axios";
+import { getAllDiscussions } from "@/queries/discussion.queries";
 import { MoveRight } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useInfiniteQuery, useQueryClient } from "react-query";
+import { useDebounce } from "use-debounce";
 
 const Discussions = () => {
-  const [discussions, setDiscussions] = useState<DiscussionCardData[]>([]);
+  const [filter, setFilter] = useState<string>("");
+  const [debouncedFilter] = useDebounce(filter, 350);
+  const queryClient = useQueryClient();
 
-  useEffect(() => {
-    async function fetchDiscussions() {
-      try {
-        const response = await axios.get("/api/discussion", {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("learnit-token")}`,
-          },
-        });
-        if (response.data.success) {
-          setDiscussions(response.data.data);
-        }
-      } catch (error) {
-        console.error(error);
+  const {
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+    isError,
+    status,
+    data: discussions,
+  } = useInfiniteQuery({
+    queryKey: ["discussions", { debouncedFilter }],
+    queryFn: ({ pageParam }) =>
+      getAllDiscussions({ pageParam, filter: debouncedFilter }),
+    getNextPageParam: (lastPage) => {
+      if (lastPage.data.metadata.hasNextPage) {
+        return lastPage.data.metadata.page + 1;
       }
-    }
-
-    fetchDiscussions();
-  }, []);
+      return undefined;
+    },
+    staleTime: 1000 * 60 * 5,
+  });
 
   return (
     <div className="px-5 md:pl-24 py-8 w-full flex flex-col bg-base-200">
       <h1 className="text-2xl text-base-content">Discussion Board</h1>
       <div className="mt-4">
         <label className="input input-bordered flex items-center gap-2 max-w-xs">
-          <input type="text" className="grow" placeholder="Search" />
+          <input
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+            type="text"
+            className="grow text-base-content"
+            placeholder="Search by title or tags"
+          />
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 16 16"
@@ -59,13 +72,23 @@ const Discussions = () => {
           </Link>
         </div>
       </div>
-      <div className="mt-4 flex flex-col-reverse lg:flex-row md:justify-between">
-        <div className="flex-1">
-          <div className="mt-6 md:mt-10 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
-            {discussions.map((discussion) => (
+      <div className="mt-4">
+        <div className="mt-6 md:mt-10 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+          {isLoading && (
+            <>
+              <DiscussionCardSkeleton />
+              <DiscussionCardSkeleton />
+              <DiscussionCardSkeleton />
+              <DiscussionCardSkeleton />
+              <DiscussionCardSkeleton />
+            </>
+          )}
+          {}
+          {discussions?.pages.map((group, i) => {
+            return group.data.data.map((discussion: DiscussionCardData) => (
               <DiscussionCard key={discussion._id} discussion={discussion} />
-            ))}
-          </div>
+            ));
+          })}
         </div>
       </div>
     </div>
