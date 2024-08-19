@@ -2,13 +2,13 @@
 import { useEffect, useState } from "react";
 
 const ThemeSwitcher = () => {
-  const [theme, setTheme] = useState(localStorage.getItem("theme") ?? "winter");
+  const [theme, setTheme] = useState("dark");
 
   const handleToggle = (e: any) => {
     if (e.target.checked) {
-      setTheme("winter");
+      setTheme("light");
     } else {
-      setTheme("dark");
+      setTheme("night");
     }
   };
 
