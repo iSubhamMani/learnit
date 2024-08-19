@@ -91,36 +91,79 @@ export async function GET(req: NextRequest) {
   await connectDB();
 
   try {
+    const url = new URL(req.url);
+    const page = parseInt(url.searchParams.get("page") as string);
+    const pageSize = 10;
+    const filter = url.searchParams.get("filter");
+
     const discussions = await DiscussionModel.aggregate([
       {
-        $lookup: {
-          from: "users",
-          localField: "askedBy",
-          foreignField: "_id",
-          as: "askedBy",
+        $match: {
+          $or: [
+            { title: { $regex: filter || "", $options: "i" } },
+            { tags: { $regex: filter || "", $options: "i" } },
+          ],
         },
       },
       {
-        $unwind: "$askedBy",
+        $sort: { createdAt: -1 },
+      },
+      {
+        $facet: {
+          metadata: [{ $count: "totalCount" }],
+          data: [
+            { $skip: (page - 1) * pageSize },
+            { $limit: pageSize },
+            {
+              $lookup: {
+                from: "users",
+                localField: "askedBy",
+                foreignField: "_id",
+                as: "askedBy",
+              },
+            },
+            {
+              $unwind: "$askedBy",
+            },
+            {
+              $project: {
+                title: 1,
+                description: 1,
+                tags: 1,
+                askedBy: {
+                  _id: 1,
+                  displayName: 1,
+                  photoURL: 1,
+                },
+                createdAt: 1,
+                updatedAt: 1,
+              },
+            },
+          ],
+        },
       },
       {
         $project: {
-          title: 1,
-          description: 1,
-          tags: 1,
-          askedBy: {
-            _id: 1,
-            displayName: 1,
-            photoURL: 1,
+          data: 1,
+          totalCount: {
+            $ifNull: [{ $arrayElemAt: ["$metadata.totalCount", 0] }, 0],
           },
-          createdAt: 1,
-          updatedAt: 1,
         },
       },
     ]);
 
+    const response = {
+      data: discussions[0].data,
+      metadata: {
+        totalCount: discussions[0].totalCount,
+        page,
+        pageSize,
+        hasNextPage: discussions[0].totalCount - page * pageSize > 0,
+      },
+    };
+
     return NextResponse.json(
-      new ApiSuccess(200, "Discussions fetched successfully", discussions),
+      new ApiSuccess(200, "Discussions fetched successfully", response),
       { status: 200 }
     );
   } catch (error) {
