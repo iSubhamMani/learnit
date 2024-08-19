@@ -6,12 +6,10 @@ import { getDiscussion } from "@/queries/discussion.queries";
 import { dislikeDiscussion, likeDiscussion } from "@/queries/reaction.queries";
 import { convertDateTime } from "@/utils/convertDateTime";
 import { ArrowLeft, LoaderCircle, ThumbsDown, ThumbsUp } from "lucide-react";
-import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { CldImage } from "next-cloudinary";
-import Image from "next/image";
 
 const DiscussionPage = () => {
   const router = useRouter();
