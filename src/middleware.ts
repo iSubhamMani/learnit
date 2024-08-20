@@ -1,44 +1,65 @@
-import { jwtVerify } from "jose";
 import { NextRequest, NextResponse } from "next/server";
 import { ApiError } from "./utils/ApiError";
-import secretKey from "./utils/encodeJWT";
+import { getToken } from "next-auth/jwt";
+
+export { default } from "next-auth/middleware";
 
 export async function middleware(req: NextRequest) {
-  try {
-    const token = req.headers.get("Authorization")?.split(" ")[1] || "";
+  const token = await getToken({
+    req,
+    secret: process.env.NEXT_PUBLIC_NEXT_AUTH_SECRET,
+  });
 
-    if (!token) {
-      return NextResponse.json(new ApiError(401, "No token provided"), {
-        status: 401,
-      });
-    }
+  const currentUrl = req.nextUrl;
 
-    const verifiedToken = jwtVerify(token, secretKey);
+  // client side redirect
 
-    if (!verifiedToken) {
-      return NextResponse.json(new ApiError(401, "Unauthorized"), {
-        status: 401,
-      });
-    }
-
-    const { _id } = (await verifiedToken).payload;
-
-    const requestHeaders = new Headers(req.headers);
-    requestHeaders.set("user-id", _id as string);
-
-    const response = NextResponse.next({
-      request: {
-        // New request headers
-        headers: requestHeaders,
-      },
-    });
-
-    return response;
-  } catch (error: any) {
-    return Response.json(new ApiError(500, error.message), { status: 500 });
+  if (
+    token &&
+    (currentUrl.pathname.startsWith("/signin") ||
+      currentUrl.pathname.startsWith("/signup") ||
+      currentUrl.pathname === "/")
+  ) {
+    return NextResponse.redirect(new URL("/u/notebooks", req.url));
   }
+
+  if (!token && currentUrl.pathname.startsWith("/u/")) {
+    return NextResponse.redirect(new URL("/signin", req.url));
+  }
+
+  if (
+    !token &&
+    (currentUrl.pathname.startsWith("/api/discussion/") ||
+      currentUrl.pathname.startsWith("/api/reply/"))
+  ) {
+    return NextResponse.json(
+      new ApiError(401, "Unauthorized access to the API"),
+      {
+        status: 401,
+      }
+    );
+  }
+
+  const requestHeaders = new Headers(req.headers);
+  requestHeaders.set("user-id", token?._id as string);
+
+  const response = NextResponse.next({
+    request: {
+      // New request headers
+      headers: requestHeaders,
+    },
+  });
+
+  return response;
 }
 
 export const config = {
-  matcher: ["/api/discussion/:path*", "/api/reply/:path*"],
+  matcher: [
+    "/",
+    "/u/:path*",
+    "/signin",
+    "/signup",
+    "/api/discussion/:path*",
+    "/api/reply/:path*",
+  ],
 };
