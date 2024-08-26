@@ -18,7 +18,7 @@ const AskPage = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm<z.infer<typeof discussionSchema>>({
     resolver: zodResolver(discussionSchema),
     defaultValues: {
       title: "",
@@ -177,7 +177,8 @@ const AskPage = () => {
                   className="text-base-content file-input-sm md:file-input-md file-input file-input-bordered file-input-primary w-full max-w-xs"
                 />
                 <p className="text-sm text-error font-medium">
-                  {errors.attachment?.message}
+                  {errors.attachment?.message &&
+                    String(errors.attachment?.message)}
                 </p>
               </div>
 
