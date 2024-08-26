@@ -4,7 +4,7 @@ import DiscussionCard from "@/components/DiscussionCard";
 import DiscussionCardSkeleton from "@/components/DiscussionCardSkeleton";
 import { DiscussionCardData } from "@/interfaces/discussion.interface";
 import { getAllDiscussions } from "@/queries/discussion.queries";
-import { MoveRight } from "lucide-react";
+import { Frown, MoveRight } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { useInfiniteQuery, useQueryClient } from "react-query";
@@ -73,6 +73,14 @@ const Discussions = () => {
         </div>
       </div>
       <div className="mt-4">
+        {discussions?.pages[0].data.data.length === 0 && (
+          <div className="flex flex-col items-center gap-2 mt-12 md:mt-20">
+            <Frown className="text-base-content h-5 w-5 md:w-6 md:h-6" />
+            <p className="text-center text-base-content text-lg font-medium">
+              No discussions found
+            </p>
+          </div>
+        )}
         <div className="mt-6 md:mt-10 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
           {isLoading && (
             <>
@@ -83,7 +91,6 @@ const Discussions = () => {
               <DiscussionCardSkeleton />
             </>
           )}
-          {}
           {discussions?.pages.map((group, i) => {
             return group.data.data.map((discussion: DiscussionCardData) => (
               <DiscussionCard key={discussion._id} discussion={discussion} />
