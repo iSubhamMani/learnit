@@ -125,12 +125,15 @@ export async function GET(req: NextRequest) {
                 replyCount: { $size: "$replies" },
                 userReaction: {
                   $cond: [
-                    { $in: [userId!, "$likes"] },
+                    { $in: [new mongoose.Types.ObjectId(userId!), "$likes"] },
                     "like",
                     {
                       $cond: [
                         {
-                          $in: [userId!, "$dislikes"],
+                          $in: [
+                            new mongoose.Types.ObjectId(userId!),
+                            "$dislikes",
+                          ],
                         },
                         "dislike",
                         null,
