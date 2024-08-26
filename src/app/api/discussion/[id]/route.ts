@@ -3,6 +3,7 @@ import { DiscussionModel } from "@/models/discussion.model";
 import { UserModel } from "@/models/user.model";
 import { ApiError } from "@/utils/ApiError";
 import { ApiSuccess } from "@/utils/ApiSuccess";
+import mongoose from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -22,7 +23,7 @@ export async function GET(req: NextRequest) {
     const discussion = await DiscussionModel.findById(id).populate({
       path: "askedBy",
       model: UserModel,
-      select: "displayName photoURL _id reputation",
+      select: "displayName photoURL _id reputation email",
     });
 
     if (!discussion) {
@@ -34,9 +35,9 @@ export async function GET(req: NextRequest) {
     let userReaction = null;
 
     if (discussion) {
-      if (discussion.likes.includes(userId)) {
+      if (discussion.likes.some((id) => id.toString() === userId)) {
         userReaction = "like";
-      } else if (discussion.dislikes.includes(userId)) {
+      } else if (discussion.dislikes.some((id) => id.toString() === userId)) {
         userReaction = "dislike";
       }
     }
@@ -49,8 +50,8 @@ export async function GET(req: NextRequest) {
       }),
       { status: 200 }
     );
-  } catch (error) {
-    return NextResponse.json(new ApiError(500, "Internal Server Error"), {
+  } catch (error: any) {
+    return NextResponse.json(new ApiError(500, error.message), {
       status: 500,
     });
   }
