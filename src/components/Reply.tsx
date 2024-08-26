@@ -59,16 +59,26 @@ const Reply = ({ reply }: { reply: ReplyData }) => {
       <div className="py-2">
         <div className="flex justify-between gap-2 items-center">
           <div className="flex gap-3 items-center">
-            <div className="avatar">
-              <div className="ring-neutral-content ring-offset-base-100 ring-1 ring-offset-2 w-4 sm:w-6 rounded-full">
-                <Image
-                  src={reply.repliedBy.photoURL}
-                  alt="avatar"
-                  width={24}
-                  height={24}
-                />
+            {reply.repliedBy.photoURL ? (
+              <div className="avatar">
+                <div className="ring-neutral-content ring-offset-base-100 ring-1 ring-offset-2 w-4 sm:w-6 rounded-full">
+                  <Image
+                    src={reply.repliedBy.photoURL}
+                    alt="avatar"
+                    width={24}
+                    height={24}
+                  />
+                </div>
               </div>
-            </div>
+            ) : (
+              <div className="avatar placeholder">
+                <div className="ring-neutral-content ring-offset-base-100 ring-1 ring-offset-2 bg-neutral text-neutral-content w-4 sm:w-6 rounded-full">
+                  <span className="text-xs">
+                    {reply.repliedBy.displayName.charAt(0).toUpperCase()}
+                  </span>
+                </div>
+              </div>
+            )}
             <span className="text-base-content text-sm font-bold">
               {reply.repliedBy.displayName}
             </span>
