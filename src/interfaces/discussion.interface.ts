@@ -1,12 +1,13 @@
+import { Schema } from "mongoose";
 import { User } from "./user.interface";
 
 export interface Discussion {
   title: string;
   description: string;
   tags: string[];
-  askedBy: string;
-  likes: string[];
-  dislikes: string[];
+  askedBy: Schema.Types.ObjectId;
+  likes: Schema.Types.ObjectId[];
+  dislikes: Schema.Types.ObjectId[];
   attachment?: string | null;
 }
 

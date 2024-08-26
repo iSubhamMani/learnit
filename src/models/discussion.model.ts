@@ -23,17 +23,17 @@ const discussionSchema: Schema<Discussion> = new Schema<Discussion>(
       },
     },
     askedBy: {
-      type: Schema.Types.String,
+      type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
     likes: {
-      type: [Schema.Types.String],
+      type: [Schema.Types.ObjectId],
       ref: "User",
       default: [],
     },
     dislikes: {
-      type: [Schema.Types.String],
+      type: [Schema.Types.ObjectId],
       ref: "User",
       default: [],
     },

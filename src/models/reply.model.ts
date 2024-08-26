@@ -12,7 +12,7 @@ const replySchema: Schema<Reply> = new Schema<Reply>(
       ref: "Reply",
     },
     repliedBy: {
-      type: Schema.Types.String,
+      type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
@@ -21,12 +21,12 @@ const replySchema: Schema<Reply> = new Schema<Reply>(
       required: true,
     },
     likes: {
-      type: [Schema.Types.String],
+      type: [Schema.Types.ObjectId],
       ref: "User",
       default: [],
     },
     dislikes: {
-      type: [Schema.Types.String],
+      type: [Schema.Types.ObjectId],
       ref: "User",
       default: [],
     },

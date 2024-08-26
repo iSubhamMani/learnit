@@ -3,10 +3,10 @@ import { Schema } from "mongoose";
 export interface Reply {
   discussionId?: Schema.Types.ObjectId;
   replyId?: Schema.Types.ObjectId;
-  repliedBy: Schema.Types.String;
+  repliedBy: Schema.Types.ObjectId;
   content: string;
-  likes: string[];
-  dislikes: string[];
+  likes: Schema.Types.ObjectId[];
+  dislikes: Schema.Types.ObjectId[];
   status: "posted" | "deleted" | "edited";
 }
 

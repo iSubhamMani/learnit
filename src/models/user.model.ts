@@ -3,11 +3,6 @@ import mongoose, { Model, Schema } from "mongoose";
 
 const userSchema = new Schema<User>(
   {
-    _id: {
-      type: String,
-      required: true,
-      unique: true,
-    },
     displayName: {
       type: String,
       required: true,
@@ -17,9 +12,13 @@ const userSchema = new Schema<User>(
       required: true,
       unique: true,
     },
+    password: {
+      type: String,
+      required: false,
+    },
     photoURL: {
       type: String,
-      required: true,
+      default: "",
     },
     answeredQuestions: {
       type: [Schema.Types.ObjectId],
