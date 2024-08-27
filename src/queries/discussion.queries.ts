@@ -1,11 +1,7 @@
 import axios from "axios";
 
 export async function getDiscussion(id: string) {
-  const res = await axios.get(`/api/discussion/${id}`, {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("learnit-token")}`,
-    },
-  });
+  const res = await axios.get(`/api/discussion/${id}`);
 
   return res.data.data;
 }
@@ -18,12 +14,7 @@ export async function getAllDiscussions({
   filter: string;
 }) {
   const res = await axios.get(
-    `/api/discussion?page=${pageParam}&filter=${filter}`,
-    {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("learnit-token")}`,
-      },
-    }
+    `/api/discussion?page=${pageParam}&filter=${filter}`
   );
 
   return res.data;
