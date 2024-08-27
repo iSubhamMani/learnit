@@ -66,11 +66,7 @@ const AskPage = () => {
     formData.set("tags", JSON.stringify(discussionData.tags));
 
     try {
-      const response = await axios.post("/api/discussion", formData, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("learnit-token")}`,
-        },
-      });
+      const response = await axios.post("/api/discussion", formData);
 
       if (response.data.success) {
         toast.success("Discussion posted successfully", {
