@@ -61,5 +61,6 @@ export const config = {
     "/signup",
     "/api/discussion/:path*",
     "/api/reply/:path*",
+    "/api/notebook/:path*",
   ],
 };
