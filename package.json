@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.17.1",
     "@hookform/resolvers": "^3.9.0",
     "@tanstack/react-query-devtools": "^5.51.23",
     "axios": "^1.7.3",
