@@ -4,7 +4,7 @@ import NewNotebookModal from "@/components/NewNotebookModal";
 import NotebookCard from "@/components/NotebookCard";
 import { NotebookData } from "@/interfaces/notebook.interface";
 import { getAllNotebooks } from "@/queries/notebook.queries";
-import { LoaderCircle } from "lucide-react";
+import { RotateCcw } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { useInfiniteQuery } from "react-query";
@@ -50,7 +50,7 @@ const NotebooksPage = () => {
           <div className="mt-6 md:mt-10">
             {isLoading && (
               <div className="mt-4 flex justify-center">
-                <LoaderCircle className="text-primary animate-spin w-5 h-5" />
+                <div className="loading loading-spinner loading-sm text-primary"></div>
               </div>
             )}
 
@@ -85,6 +85,21 @@ const NotebooksPage = () => {
                 </div>
               </div>
             )}
+
+            <div className="mt-4 flex justify-center">
+              {hasNextPage && !isFetchingNextPage ? (
+                <button
+                  onClick={() => fetchNextPage()}
+                  className="text-sm text-primary font-bold px-4 py-2 w-max flex gap-2 items-center rounded-full bg-primary bg-opacity-10 hover:bg-opacity-20 transition ease-in-out duration-200"
+                >
+                  Load more
+                  <RotateCcw className="w-4 h-4 text-primary" />
+                </button>
+              ) : null}
+              {isFetchingNextPage && (
+                <div className="loading loading-spinner loading-sm text-primary"></div>
+              )}
+            </div>
           </div>
         </div>
       </div>
