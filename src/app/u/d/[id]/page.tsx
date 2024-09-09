@@ -5,11 +5,12 @@ import Tag from "@/components/Tag";
 import { getDiscussion } from "@/queries/discussion.queries";
 import { dislikeDiscussion, likeDiscussion } from "@/queries/reaction.queries";
 import { convertDateTime } from "@/utils/convertDateTime";
-import { ArrowLeft, LoaderCircle, ThumbsDown, ThumbsUp } from "lucide-react";
+import { ThumbsDown, ThumbsUp } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { CldImage } from "next-cloudinary";
+import BackButton from "@/components/BackButton";
 
 const DiscussionPage = () => {
   const router = useRouter();
@@ -131,20 +132,15 @@ const DiscussionPage = () => {
 
   if (isLoading)
     return (
-      <div className="className=px-5 md:pl-24 py-8 w-full flex flex-col items-center justify-center bg-base-200">
-        <LoaderCircle className="text-primary animate-spin w-6 h-6" />
+      <div className="px-5 md:pl-24 py-8 w-full flex flex-col items-center justify-center bg-base-200">
+        <div className="loading loading-spinner loading-sm text-primary"></div>
       </div>
     );
 
   return (
     <div className="px-4 md:pl-24 py-8 w-full flex flex-col bg-base-200">
       <div className="mb-4">
-        <button
-          onClick={() => router.back()}
-          className="btn btn-sm sm:btn-md btn-circle"
-        >
-          <ArrowLeft className="text-base-content w-5 h-5 sm:w-6 sm:h-6" />
-        </button>
+        <BackButton />
       </div>
       <div className="w-full mx-auto max-w-3xl">
         <div className="border-b border-base-content/35 pb-4">

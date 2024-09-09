@@ -1,12 +1,12 @@
 "use client";
 
+import BackButton from "@/components/BackButton";
 import TagInput from "@/components/TagInput";
 import useTagInput from "@/hooks/useTagInput";
 import { discussionSchema, tagSchema } from "@/schemas/DiscussionSchema";
 import { SERVER_ERROR_MESSAGE } from "@/utils/constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
-import { ArrowLeft, LoaderCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -95,15 +95,10 @@ const AskPage = () => {
   return (
     <div className="px-5 md:pl-24 py-8 w-full flex flex-col bg-base-200">
       <div className="mb-4">
-        <button
-          onClick={() => router.back()}
-          className="btn btn-sm sm:btn-md btn-circle"
-        >
-          <ArrowLeft className="text-base-content w-5 h-5 sm:w-6 sm:h-6" />
-        </button>
+        <BackButton />
       </div>
       <div className="mx-auto w-full max-w-4xl">
-        <div className="card bg-base-100 w-full shadow-xl">
+        <div className="card bg-neutral/85 w-full shadow-xl">
           <div className="card-body p-4 sm:p-6 md:p-8">
             <h1 className="text-2xl md:text-3xl text-base-content mb-4">
               Start a discussion
@@ -180,7 +175,7 @@ const AskPage = () => {
 
               <button type="submit" className="btn btn-primary">
                 {submitting ? (
-                  <LoaderCircle className="animate-spin" />
+                  <div className="loading loading-spinner loading-sm text-primary"></div>
                 ) : (
                   "Submit"
                 )}
