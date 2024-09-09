@@ -1,7 +1,7 @@
 "use client";
 
 import { createNotebook } from "@/queries/notebook.queries";
-import { FilePlus, LoaderCircle } from "lucide-react";
+import { FilePlus } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useMutation, useQueryClient } from "react-query";
@@ -84,7 +84,7 @@ const NewNotebookModal = ({ debouncedQuery }: { debouncedQuery: string }) => {
               className="btn btn-primary"
             >
               {isLoading ? (
-                <LoaderCircle className="w-4 h-4 text-primary animate-spin" />
+                <div className="loading loading-spinner loading-sm text-primary"></div>
               ) : (
                 "Create"
               )}
