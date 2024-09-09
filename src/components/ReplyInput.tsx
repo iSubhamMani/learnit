@@ -1,4 +1,4 @@
-import { LoaderCircle, Send } from "lucide-react";
+import { Send } from "lucide-react";
 
 const ReplyInput = ({
   stateValue,
@@ -30,7 +30,7 @@ const ReplyInput = ({
         className="btn-sm md:btn-md btn btn-circle"
       >
         {isReplyLoading ? (
-          <LoaderCircle className="text-primary animate-spin w-5 h-5" />
+          <div className="loading loading-spinner loading-sm text-primary"></div>
         ) : (
           <Send className="text-base-content w-4 h-4 md:w-5 md:h-5" />
         )}

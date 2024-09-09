@@ -1,7 +1,7 @@
 import { ReplyData } from "@/interfaces/reply.interface";
 import { editReply } from "@/queries/replies.queries";
-import { LoaderCircle, Send } from "lucide-react";
-import { useRef, useState } from "react";
+import { Send } from "lucide-react";
+import { useRef } from "react";
 import toast from "react-hot-toast";
 import { useMutation, useQueryClient } from "react-query";
 
@@ -55,7 +55,7 @@ const ReplyEdit = ({
           className="btn-sm md:btn-md btn btn-circle"
         >
           {isLoading ? (
-            <LoaderCircle className="text-primary animate-spin w-5 h-5" />
+            <div className="loading loading-spinner loading-sm text-primary"></div>
           ) : (
             <Send className="text-base-content w-4 h-4 md:w-5 md:h-5" />
           )}

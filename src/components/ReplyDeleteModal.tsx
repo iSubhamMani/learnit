@@ -1,4 +1,3 @@
-import { LoaderCircle } from "lucide-react";
 import { Dispatch, SetStateAction } from "react";
 
 const ReplyDeleteModal = ({
@@ -20,7 +19,7 @@ const ReplyDeleteModal = ({
             className="py-2 px-4 w-full text-start hover:bg-error text-base-content hover:text-error-content"
           >
             {isDeleting ? (
-              <LoaderCircle className="animate-spin ml-2 w-4 h-4 text-error-content" />
+              <div className="loading loading-spinner loading-sm text-primary"></div>
             ) : (
               "Delete"
             )}

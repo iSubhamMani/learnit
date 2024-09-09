@@ -1,6 +1,6 @@
 "use client";
 
-import { LoaderCircle, RotateCcw, Send } from "lucide-react";
+import { RotateCcw } from "lucide-react";
 import { useInfiniteQuery, useMutation, useQueryClient } from "react-query";
 import Reply from "./Reply";
 import { ReplyData } from "@/interfaces/reply.interface";
@@ -58,7 +58,7 @@ const RepliesSection = ({ discussionId }: { discussionId: string }) => {
   if (isLoading)
     return (
       <div className="mt-4 flex justify-center">
-        <LoaderCircle className="text-primary animate-spin w-5 h-5" />
+        <div className="loading loading-spinner loading-sm text-primary"></div>
       </div>
     );
 
@@ -98,7 +98,7 @@ const RepliesSection = ({ discussionId }: { discussionId: string }) => {
           </button>
         ) : null}
         {isFetchingNextPage && (
-          <LoaderCircle className="text-primary animate-spin w-5 h-5" />
+          <div className="loading loading-spinner loading-sm text-primary"></div>
         )}
       </div>
     </>

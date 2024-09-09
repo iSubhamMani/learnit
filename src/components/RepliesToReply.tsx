@@ -1,5 +1,5 @@
 import { getReplies } from "@/queries/replies.queries";
-import { LoaderCircle, RotateCcw } from "lucide-react";
+import { RotateCcw } from "lucide-react";
 import { useInfiniteQuery } from "react-query";
 import Reply from "./Reply";
 import { ReplyData } from "@/interfaces/reply.interface";
@@ -38,7 +38,7 @@ const RepliesToReply = ({
   if (isLoading)
     return (
       <div className="mt-4 flex justify-center">
-        <LoaderCircle className="text-primary animate-spin w-5 h-5" />
+        <div className="loading loading-spinner loading-sm text-primary"></div>
       </div>
     );
 
@@ -76,7 +76,7 @@ const RepliesToReply = ({
           </button>
         ) : null}
         {isFetchingNextPage && (
-          <LoaderCircle className="text-primary animate-spin w-5 h-5" />
+          <div className="loading loading-spinner loading-sm text-primary"></div>
         )}
       </div>
     </div>
