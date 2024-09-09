@@ -3,11 +3,11 @@
 import { signupSchema } from "@/schemas/signup.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
-import { Camera, LoaderCircle } from "lucide-react";
+import { Camera } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { useForm, useWatch } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
 
@@ -63,7 +63,10 @@ const SignupForm = () => {
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        toast.error(error.response?.data.message);
+        toast.error(
+          error.response?.data.message ||
+            "Somthing went wrong. Please check your internet connection"
+        );
       } else {
         toast.error("An error occurred");
       }
@@ -181,7 +184,7 @@ const SignupForm = () => {
             </div>
             <button type="submit" className="btn btn-primary">
               {submitting ? (
-                <LoaderCircle className="animate-spin" />
+                <div className="loading loading-spinner loading-sm text-primary-content"></div>
               ) : (
                 "Submit"
               )}

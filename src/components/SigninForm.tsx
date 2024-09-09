@@ -2,7 +2,6 @@
 
 import { signinSchema } from "@/schemas/signin.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LoaderCircle } from "lucide-react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -92,7 +91,7 @@ const SigninForm = () => {
 
             <button type="submit" className="btn btn-primary">
               {submitting ? (
-                <LoaderCircle className="animate-spin" />
+                <div className="loading loading-spinner loading-sm text-primary-content"></div>
               ) : (
                 "Submit"
               )}
