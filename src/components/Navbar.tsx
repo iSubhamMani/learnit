@@ -1,6 +1,7 @@
-import { LogOut, MessageCircle, Notebook, UserRound } from "lucide-react";
+import { MessageCircle, Notebook } from "lucide-react";
 import ThemeSwitcher from "../components/ThemeSwitcher";
 import Link from "next/link";
+import Logout from "./Logout";
 
 const Navbar = () => {
   return (
@@ -26,7 +27,11 @@ const Navbar = () => {
           className="p-2 tooltip tooltip-right cursor-pointer rounded-md hover:bg-primary hover:bg-opacity-10"
           data-tip="Profile"
         >
-          <UserRound className="w-6 h-6 text-base-content" />
+          <div className="avatar placeholder">
+            <div className="ring-neutral-content ring-offset-base-100 ring-1 ring-offset-2 bg-neutral text-neutral-content w-4 sm:w-6 rounded-full">
+              <span className="text-xs">U</span>
+            </div>
+          </div>
         </div>
         <div
           className="p-2 tooltip tooltip-right cursor-pointer rounded-md hover:bg-primary hover:bg-opacity-10"
@@ -36,12 +41,7 @@ const Navbar = () => {
         </div>
       </nav>
       <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
-        <div
-          data-tip="Logout"
-          className="p-2 tooltip tooltip-right cursor-pointer rounded-md hover:bg-primary hover:bg-opacity-10"
-        >
-          <LogOut className="w-6 h-6 text-base-content" />
-        </div>
+        <Logout />
       </nav>
     </aside>
   );
