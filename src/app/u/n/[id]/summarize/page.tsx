@@ -2,22 +2,54 @@
 
 import BackButton from "@/components/BackButton";
 import Summary from "@/components/Summary";
-import axios from "axios";
+import { getSummary } from "@/queries/summary.queries";
 import { ArrowUp } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { useMutation, useQueryClient } from "react-query";
 
 const Summarize = ({ params }: { params: { id: string } }) => {
   const [summary, setSummary] = useState<string[]>([]);
   const [image, setImage] = useState<File | undefined>(undefined);
-  const [uploading, setUploading] = useState(false);
   const notebookId = params.id;
-  const router = useRouter();
+  const queryClient = useQueryClient();
+
+  const {
+    mutate,
+    isLoading: uploading,
+    data,
+  } = useMutation({
+    mutationFn: () => getSummary(image as File, notebookId),
+    onSuccess: (data) => {
+      if (data.data === "null") {
+        toast.error("No educational content found", {
+          duration: 3000,
+          position: "top-center",
+        });
+
+        return;
+      }
+
+      setSummary((prev) => [...prev, data.data]);
+      setImage(undefined);
+
+      queryClient.invalidateQueries({
+        queryKey: ["summaries", { notebookId, pageSize: 4 }],
+        exact: true,
+      });
+    },
+    onError: () => {
+      toast.error("Error summarizing image", {
+        duration: 3000,
+        position: "top-center",
+      });
+      setImage(undefined);
+    },
+  });
 
   useEffect(() => {
     if (!image) return;
-    getSummary(image);
+    mutate();
   }, [image]);
 
   useEffect(() => {
@@ -26,40 +58,6 @@ const Summarize = ({ params }: { params: { id: string } }) => {
       behavior: "smooth",
     });
   }, [summary]);
-
-  const getSummary = async (image: File) => {
-    setUploading(true);
-    window.scrollTo({
-      top: document.body.scrollHeight,
-      behavior: "smooth",
-    });
-    try {
-      const formData = new FormData();
-      formData.append("mediaPath", image);
-      formData.append("notebookId", notebookId);
-
-      const res = await axios.post("/api/summarize", formData);
-
-      if (res.data.success) {
-        if (res.data.data === "null") {
-          toast.error("No educational content found in the image", {
-            duration: 3000,
-            position: "top-center",
-          });
-          return;
-        }
-        setSummary((prev) => [...prev, res.data.data]);
-      }
-    } catch (error) {
-      toast.error("Error summarizing image", {
-        duration: 3000,
-        position: "top-center",
-      });
-    } finally {
-      setImage(undefined);
-      setUploading(false);
-    }
-  };
 
   return (
     <div className="px-4 md:px-6 md:pl-24 py-8 lg:pb-12 w-full flex flex-col bg-base-200 relative">
@@ -91,13 +89,13 @@ const Summarize = ({ params }: { params: { id: string } }) => {
       <div className="z-50 fixed bottom-4 left-[50%] translate-x-[-50%] grid gap-4">
         <div className="flex justify-center">
           <label
-            className="hover:bg-primary/85 transition duration-200 ease-in-out text-primary-content rounded-full cursor-pointer"
+            className="shadow-xl dark:shadow-2xl hover:bg-primary/85 transition duration-200 ease-in-out text-primary-content rounded-full cursor-pointer"
             htmlFor="pofile-photo"
           >
-            <div className="flex items-center px-6 py-3 shadow-2xl bg-neutral text-white rounded-full">
+            <div className="flex items-center px-6 py-3 shadow-2xl bg-neutral dark:bg-neutral-content rounded-full">
               {!uploading && (
                 <>
-                  <span className="mr-2 font-medium text-neutral-content">
+                  <span className="mr-2 font-medium text-neutral-content dark:text-neutral">
                     Upload
                   </span>
                   <span className="flex items-center justify-center p-1 bg-secondary rounded-full">
