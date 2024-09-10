@@ -1,5 +1,6 @@
 "use client";
 
+import LoadMoreButton from "@/components/LoadMoreButton";
 import NewNotebookModal from "@/components/NewNotebookModal";
 import NotebookCard from "@/components/NotebookCard";
 import { NotebookData } from "@/interfaces/notebook.interface";
@@ -31,7 +32,7 @@ const NotebooksPage = () => {
       }
       return undefined;
     },
-    staleTime: 1000 * 60 * 5,
+    staleTime: 1000 * 60 * 10,
   });
 
   return (
@@ -88,13 +89,7 @@ const NotebooksPage = () => {
 
             <div className="mt-4 flex justify-center">
               {hasNextPage && !isFetchingNextPage ? (
-                <button
-                  onClick={() => fetchNextPage()}
-                  className="text-sm text-primary font-bold px-4 py-2 w-max flex gap-2 items-center rounded-full bg-primary bg-opacity-10 hover:bg-opacity-20 transition ease-in-out duration-200"
-                >
-                  Load more
-                  <RotateCcw className="w-4 h-4 text-primary" />
-                </button>
+                <LoadMoreButton clickHandler={fetchNextPage} />
               ) : null}
               {isFetchingNextPage && (
                 <div className="loading loading-spinner loading-sm text-primary"></div>
