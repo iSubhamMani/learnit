@@ -12,7 +12,9 @@ const Tag = ({
       onClick={onClickHandler}
       className="badge badge-secondary gap-2 p-3 cursor-pointer"
     >
-      <span className="text-secondary-content text-xs sm:text-sm">{value}</span>
+      <span className="text-secondary-content text-xs sm:text-sm font-bold">
+        {value}
+      </span>
       {onClickHandler && (
         <svg
           xmlns="http://www.w3.org/2000/svg"
