@@ -98,7 +98,7 @@ const AskPage = () => {
         <BackButton />
       </div>
       <div className="mx-auto w-full max-w-4xl">
-        <div className="card bg-neutral/85 w-full shadow-xl">
+        <div className="card dark:bg-neutral/85 bg-base-100 w-full shadow-xl">
           <div className="card-body p-4 sm:p-6 md:p-8">
             <h1 className="text-2xl md:text-3xl text-base-content mb-4">
               Start a discussion
@@ -175,7 +175,7 @@ const AskPage = () => {
 
               <button type="submit" className="btn btn-primary">
                 {submitting ? (
-                  <div className="loading loading-spinner loading-sm text-primary"></div>
+                  <div className="loading loading-spinner loading-sm text-primary-content"></div>
                 ) : (
                   "Submit"
                 )}
