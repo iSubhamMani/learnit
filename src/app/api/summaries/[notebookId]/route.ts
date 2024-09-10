@@ -13,7 +13,8 @@ export async function GET(req: NextRequest) {
     const url = new URL(req.url);
     const notebookId = url.pathname.split("/").pop()?.split("?")[0] as string;
     const page = parseInt(url.searchParams.get("page") as string);
-    const pageSize = 10;
+    const pageSize = parseInt(url.searchParams.get("pageSize") as string) || 10;
+    const filter = (url.searchParams.get("filter") as string) || "";
 
     if (!userId || !notebookId) {
       return NextResponse.json(new ApiError(400, "Unauthorized"), {
@@ -24,14 +25,9 @@ export async function GET(req: NextRequest) {
     const summaries = await SummaryModel.aggregate([
       {
         $match: {
-          $and: [
-            {
-              generatedBy: new mongoose.Types.ObjectId(userId),
-            },
-            {
-              notebook: new mongoose.Types.ObjectId(notebookId),
-            },
-          ],
+          content: { $regex: filter, $options: "i" },
+          generatedBy: new mongoose.Types.ObjectId(userId),
+          notebook: new mongoose.Types.ObjectId(notebookId),
         },
       },
       {
