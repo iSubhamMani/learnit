@@ -1,44 +1,42 @@
 "use client";
 
 import BackButton from "@/components/BackButton";
+import StyledButton from "@/components/StyledButton";
 import SummaryCard from "@/components/SummaryCard";
 import { NotebookData } from "@/interfaces/notebook.interface";
 import { Summary } from "@/interfaces/summary.interface";
+import { getNotebookInfo } from "@/queries/notebook.queries";
 import { getAllSummaries } from "@/queries/summary.queries";
 import axios from "axios";
 import { FileTextIcon, PuzzleIcon, RotateCcw } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useInfiniteQuery } from "react-query";
+import toast from "react-hot-toast";
+import { useInfiniteQuery, useQuery } from "react-query";
 
 const NotebookManagePage = ({ params }: { params: { id: string } }) => {
   const notebookId = params.id;
-  const [notebookInfo, setNotebookInfo] = useState<NotebookData | null>(null);
 
-  useEffect(() => {
-    if (!notebookId) return;
-
-    async function getNoteBookInfo() {
-      const res = await axios.get(`/api/notebook/${notebookId}`);
-
-      if (res.data.success) {
-        setNotebookInfo(res.data.data);
-      }
-    }
-
-    getNoteBookInfo();
-  }, [notebookId]);
+  const { data: notebookData, isLoading: infoLoading } = useQuery({
+    queryKey: ["notebookInfo", { notebookId }],
+    queryFn: () => getNotebookInfo(notebookId),
+    staleTime: Infinity,
+    onError: () => {
+      toast.error("Error fetching notebook info", {
+        duration: 3000,
+        position: "top-center",
+      });
+    },
+  });
 
   const {
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
     isLoading,
     isError,
     data: summaries,
   } = useInfiniteQuery({
-    queryKey: ["summaries", { notebookId }],
-    queryFn: ({ pageParam }) => getAllSummaries({ pageParam, notebookId }),
+    queryKey: ["summaries", { notebookId, pageSize: 4 }],
+    queryFn: ({ pageParam }) =>
+      getAllSummaries({ pageParam, notebookId, pageSize: 4 }),
     getNextPageParam: (lastPage) => {
       if (lastPage.data.metadata.hasNextPage) {
         return lastPage.data.metadata.page + 1;
@@ -55,8 +53,11 @@ const NotebookManagePage = ({ params }: { params: { id: string } }) => {
       <div className="flex gap-3 items-center">
         <BackButton />
         <h1 className="text-base-content text-xl font-medium">
-          {notebookInfo?.name}
+          {notebookData?.data?.name}
         </h1>
+        {infoLoading && (
+          <div className="bg-neutral-content skeleton h-4 w-full max-w-32"></div>
+        )}
       </div>
       <div className="flex flex-col sm:flex-row gap-4 my-4">
         <Link href={`/u/n/${notebookId}/summarize`}>
@@ -100,7 +101,7 @@ const NotebookManagePage = ({ params }: { params: { id: string } }) => {
       </div>
       <div className="my-4">
         <h1 className="text-base-content text-2xl font-medium">
-          Your summaries
+          Recent summaries
         </h1>
         {isLoading && (
           <div className="mt-4 flex justify-center">
@@ -114,20 +115,13 @@ const NotebookManagePage = ({ params }: { params: { id: string } }) => {
             });
           })}
         </div>
-        <div className="mt-4 flex justify-center">
-          {hasNextPage && !isFetchingNextPage ? (
-            <button
-              onClick={() => fetchNextPage()}
-              className="text-sm text-primary font-bold px-4 py-2 w-max flex gap-2 items-center rounded-full bg-primary bg-opacity-10 hover:bg-opacity-20 transition ease-in-out duration-200"
-            >
-              Load more
-              <RotateCcw className="w-4 h-4 text-primary" />
-            </button>
-          ) : null}
-          {isFetchingNextPage && (
-            <div className="loading loading-spinner loading-sm text-primary"></div>
-          )}
-        </div>
+        {!isLoading && !isError && (
+          <div className="mt-4 md:mt-6 flex justify-center">
+            <Link href={`/u/n/${notebookId}/summaries`}>
+              <StyledButton content="View all" />
+            </Link>
+          </div>
+        )}
       </div>
       <div>
         <h1 className="text-base-content text-2xl font-medium">Your quizzes</h1>
