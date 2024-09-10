@@ -62,5 +62,7 @@ export const config = {
     "/api/discussion/:path*",
     "/api/reply/:path*",
     "/api/notebook/:path*",
+    "/api/summarize/:path*",
+    "/api/summaries/:path*",
   ],
 };
