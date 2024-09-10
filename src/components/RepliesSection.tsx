@@ -8,6 +8,7 @@ import { addReply, getReplies } from "@/queries/replies.queries";
 import { useCallback, useState } from "react";
 import toast from "react-hot-toast";
 import ReplyInput from "./ReplyInput";
+import LoadMoreButton from "./LoadMoreButton";
 
 const RepliesSection = ({ discussionId }: { discussionId: string }) => {
   const [content, setContent] = useState<string>("");
@@ -89,13 +90,7 @@ const RepliesSection = ({ discussionId }: { discussionId: string }) => {
       </div>
       <div className="mt-4 flex justify-center">
         {hasNextPage && !isFetchingNextPage ? (
-          <button
-            onClick={() => fetchNextPage()}
-            className="text-sm text-primary font-bold px-4 py-2 w-max flex gap-2 items-center rounded-full bg-primary bg-opacity-10 hover:bg-opacity-20 transition ease-in-out duration-200"
-          >
-            Load more
-            <RotateCcw className="w-4 h-4 text-primary" />
-          </button>
+          <LoadMoreButton clickHandler={fetchNextPage} />
         ) : null}
         {isFetchingNextPage && (
           <div className="loading loading-spinner loading-sm text-primary"></div>

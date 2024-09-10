@@ -4,6 +4,7 @@ import { useInfiniteQuery } from "react-query";
 import Reply from "./Reply";
 import { ReplyData } from "@/interfaces/reply.interface";
 import { useEffect } from "react";
+import LoadMoreButton from "./LoadMoreButton";
 
 const RepliesToReply = ({
   replyId,
@@ -67,13 +68,7 @@ const RepliesToReply = ({
       </div>
       <div className="mt-4 flex justify-center">
         {hasNextPage && !isFetchingNextPage ? (
-          <button
-            onClick={() => fetchNextPage()}
-            className="text-sm text-primary font-bold px-4 py-2 w-max flex gap-2 items-center rounded-full bg-primary bg-opacity-10 hover:bg-opacity-20 transition ease-in-out duration-200"
-          >
-            Load more
-            <RotateCcw className="w-4 h-4 text-primary" />
-          </button>
+          <LoadMoreButton clickHandler={fetchNextPage} />
         ) : null}
         {isFetchingNextPage && (
           <div className="loading loading-spinner loading-sm text-primary"></div>
