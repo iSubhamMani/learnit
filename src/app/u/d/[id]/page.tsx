@@ -138,7 +138,7 @@ const DiscussionPage = () => {
     );
 
   return (
-    <div className="px-4 md:pl-24 py-8 w-full flex flex-col bg-base-200">
+    <div className="px-4 md:pl-24 py-8 md:py-12 w-full flex flex-col bg-base-200">
       <div className="mb-4">
         <BackButton />
       </div>
