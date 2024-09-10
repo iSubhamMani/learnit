@@ -18,11 +18,12 @@ const ReplyInput = ({
   return (
     <div className="flex items-center gap-3">
       <input
+        autoFocus
         onChange={(e) => stateAction(e.target.value)}
         value={stateValue}
         type="text"
         placeholder={placeholder}
-        className={`text-base-content input input-bordered w-full input-${size}`}
+        className={`p-4 text-base-content input input-bordered w-full input-${size}`}
       />
       <button
         disabled={isReplyLoading}
