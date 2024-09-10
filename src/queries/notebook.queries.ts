@@ -17,3 +17,9 @@ export const getAllNotebooks = async ({
 
   return res.data;
 };
+
+export const getNotebookInfo = async (notebookId: string) => {
+  const res = await axios.get(`/api/notebook/${notebookId}`);
+
+  return res.data;
+};
