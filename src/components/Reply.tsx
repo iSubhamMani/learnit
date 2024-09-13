@@ -60,7 +60,7 @@ const Reply = ({ reply }: { reply: ReplyData }) => {
           <div className="flex gap-3 items-center">
             {reply.repliedBy.photoURL ? (
               <div className="avatar">
-                <div className="ring-neutral-content ring-offset-base-100 ring-1 ring-offset-2 w-4 sm:w-6 rounded-full">
+                <div className="ring-base-content ring-offset-base-100 ring-1 ring-offset-2 w-4 sm:w-6 rounded-full">
                   <Image
                     src={reply.repliedBy.photoURL}
                     alt="avatar"
@@ -71,7 +71,7 @@ const Reply = ({ reply }: { reply: ReplyData }) => {
               </div>
             ) : (
               <div className="avatar placeholder">
-                <div className="ring-neutral-content ring-offset-base-100 ring-1 ring-offset-2 bg-neutral text-neutral-content w-4 sm:w-6 rounded-full">
+                <div className="ring-base-content ring-offset-base-100 ring-1 ring-offset-2 bg-neutral text-neutral-content w-4 sm:w-6 rounded-full">
                   <span className="text-xs">
                     {reply.repliedBy.displayName.charAt(0).toUpperCase()}
                   </span>

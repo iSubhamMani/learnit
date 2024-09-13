@@ -20,7 +20,7 @@ const DiscussionCard = ({ discussion }: { discussion: DiscussionCardData }) => {
             <div className="flex items-center gap-2">
               {discussion.askedBy.photoURL ? (
                 <div className="avatar">
-                  <div className="ring-neutral-content ring-offset-base-100 ring-1 ring-offset-2 w-4 sm:w-6 rounded-full">
+                  <div className="ring-base-content ring-offset-base-100 ring-1 ring-offset-2 w-4 sm:w-6 rounded-full">
                     <Image
                       src={discussion.askedBy.photoURL}
                       alt="avatar"
@@ -31,7 +31,7 @@ const DiscussionCard = ({ discussion }: { discussion: DiscussionCardData }) => {
                 </div>
               ) : (
                 <div className="avatar placeholder">
-                  <div className="ring-neutral-content ring-offset-base-100 ring-1 ring-offset-2 bg-neutral text-neutral-content w-4 sm:w-6 rounded-full">
+                  <div className="ring-base-content ring-offset-base-100 ring-1 ring-offset-2 bg-neutral text-neutral-content w-4 sm:w-6 rounded-full">
                     <span className="text-xs">
                       {discussion.askedBy.displayName.charAt(0).toUpperCase()}
                     </span>
