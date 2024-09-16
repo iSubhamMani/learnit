@@ -43,7 +43,7 @@ const NotebookManagePage = ({ params }: { params: { id: string } }) => {
       }
       return undefined;
     },
-    staleTime: 1000 * 60 * 5,
+    staleTime: 1000 * 60 * 10,
   });
 
   if (!notebookId) return;
@@ -61,7 +61,7 @@ const NotebookManagePage = ({ params }: { params: { id: string } }) => {
       </div>
       <div className="flex flex-col sm:flex-row gap-4 my-4">
         <Link href={`/u/n/${notebookId}/summarize`}>
-          <div className="cursor-pointer w-full max-w-md card bg-base-100 shadow-md rounded-md hover:bg-white/55 dark:hover:bg-neutral">
+          <div className="h-full cursor-pointer w-full max-w-md card bg-base-100 shadow-md rounded-md hover:bg-white/55 dark:hover:bg-neutral">
             <div className="card-body p-4 sm:p-6 md:p-8">
               <div className="card-title">
                 <div className="flex items-center gap-2">
@@ -80,24 +80,26 @@ const NotebookManagePage = ({ params }: { params: { id: string } }) => {
             </div>
           </div>
         </Link>
-        <div className="cursor-pointer w-full max-w-md card bg-base-100 shadow-md rounded-md hover:bg-white/55 dark:hover:bg-neutral">
-          <div className="card-body p-4 sm:p-6 md:p-8">
-            <div className="card-title">
-              <div className="flex items-center gap-2">
-                <PuzzleIcon className="text-secondary w-4 h-4 sm:w-6 sm:h-6" />
-                <p className="text-lg sm:text-xl text-base-content font-bold">
-                  Generate Quiz
+        <Link href={`/u/n/${notebookId}/quiz`}>
+          <div className="h-full cursor-pointer w-full max-w-md card bg-base-100 shadow-md rounded-md hover:bg-white/55 dark:hover:bg-neutral">
+            <div className="card-body p-4 sm:p-6 md:p-8">
+              <div className="card-title">
+                <div className="flex items-center gap-2">
+                  <PuzzleIcon className="text-secondary w-4 h-4 sm:w-6 sm:h-6" />
+                  <p className="text-lg sm:text-xl text-base-content font-bold">
+                    Generate Quiz
+                  </p>
+                </div>
+              </div>
+              <div>
+                <p className="text-base-content/95 font-normal">
+                  Create engaging quizzes from your notes to test your
+                  understanding
                 </p>
               </div>
             </div>
-            <div>
-              <p className="text-base-content/95 font-normal">
-                Create engaging quizzes from your notes to test your
-                understanding
-              </p>
-            </div>
           </div>
-        </div>
+        </Link>
       </div>
       <div className="my-4">
         <h1 className="text-base-content text-2xl font-medium">
