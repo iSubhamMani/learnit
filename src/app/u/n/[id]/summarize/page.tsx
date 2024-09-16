@@ -37,6 +37,9 @@ const Summarize = ({ params }: { params: { id: string } }) => {
         queryKey: ["summaries", { notebookId, pageSize: 4 }],
         exact: true,
       });
+      queryClient.invalidateQueries({
+        queryKey: ["summaries", { notebookId, pageSize: 10 }],
+      });
     },
     onError: () => {
       toast.error("Error summarizing image", {
@@ -63,7 +66,7 @@ const Summarize = ({ params }: { params: { id: string } }) => {
     <div className="px-4 md:px-6 md:pl-24 py-8 lg:pb-12 w-full flex flex-col bg-base-200 relative">
       <div className="flex gap-3 items-center">
         <BackButton />
-        <h1 className="text-base-content text-xl md:text-3xl font-bold tracking-tight sm:text-4xl">
+        <h1 className="text-base-content text-xl md:text-2xl font-bold tracking-tight sm:text-4xl">
           Summarize your notes
         </h1>
       </div>
@@ -104,7 +107,7 @@ const Summarize = ({ params }: { params: { id: string } }) => {
                 </>
               )}
               {uploading && (
-                <div className="loading loading-spinner loading-sm text-neutral-content"></div>
+                <div className="loading loading-spinner loading-sm text-neutral-content dark:text-neutral"></div>
               )}
             </div>
           </label>
