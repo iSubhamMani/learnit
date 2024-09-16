@@ -36,15 +36,11 @@ export async function POST(req: NextRequest) {
     await writeFile(filePath, buffer);
 
     const prompt = `
-    Please analyze the provided image and generate a concise summary of its educational content. Focus on the core ideas and avoid unnecessary details. The output should be formatted as given in the example, the topic and points separated by a # and each points seperated by a \n character.
+    Please analyze the provided image and generate a concise summary of its educational content. Focus on all the key points. The output should be formatted as given in the example, an array in which the first element is the topic and the rest are the key points.
   
     **Example:**
-  
-    The Solar System
-    #
-      The Sun is at the center\n
-      There are eight planets\n
-      The planets are divided into two groups: terrestrial and gas giants.
+
+    ["The Solar System", "The Sun is at the center", "There are eight planets", "The planets are divided into two groups: terrestrial and gas giants"]
   
     **End of Example:**
   
