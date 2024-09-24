@@ -1,8 +1,9 @@
 "use client";
 
 import Navbar from "@/components/Navbar";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import StoreProvider from "@/components/StoreProvider";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
 
 const queryClient = new QueryClient();
 
@@ -13,10 +14,13 @@ export default function AppLayout({
 }>) {
   return (
     <div className="flex min-h-screen">
-      <QueryClientProvider client={queryClient}>
-        <Navbar />
-        {children}
-      </QueryClientProvider>
+      <StoreProvider>
+        <QueryClientProvider client={queryClient}>
+          <Navbar />
+          {children}
+          <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
+        </QueryClientProvider>
+      </StoreProvider>
     </div>
   );
 }
