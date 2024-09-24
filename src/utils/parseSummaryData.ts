@@ -1,20 +1,15 @@
 import toast from "react-hot-toast";
 
+// example data: "["The Solar System", "The Sun is at the center", "There are eight planets", "The planets are divided into two groups: terrestrial and gas giants"]"
+
 export const parseData = (data: string) => {
   try {
-    const parts = data.split("#");
+    const parsedData = JSON.parse(data);
 
-    // The first part is the topic
-    const topic = parts[0].trim();
-
-    // The second part contains the points separated by \n
-    const pointsSection = parts[1].trim();
+    const topic = parsedData[0];
 
     // Split points based on \n
-    const points = pointsSection
-      .split("\n")
-      .map((point) => point.trim())
-      .filter((point) => point.length > 0);
+    const points: string[] = parsedData.slice(1);
 
     return { topic, points };
   } catch (error) {
