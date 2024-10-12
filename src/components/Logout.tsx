@@ -10,7 +10,7 @@ const Logout = () => {
       data-tip="Logout"
       className="p-2 tooltip tooltip-right cursor-pointer rounded-md hover:bg-primary hover:bg-opacity-10"
     >
-      <LogOut className="w-6 h-6 text-base-content" />
+      <LogOut className="w-5 h-5 md:w-6 md:h-6 text-base-content" />
     </div>
   );
 };
