@@ -28,7 +28,7 @@ const Navbar = () => {
           data-tip="Profile"
         >
           <div className="avatar placeholder">
-            <div className="ring-base-content ring-offset-base-100 ring-1 ring-offset-2 bg-neutral text-neutral-content w-4 sm:w-6 rounded-full">
+            <div className="ring-base-content ring-offset-base-100 ring-1 ring-offset-2 bg-neutral text-neutral-content w-6 rounded-full">
               <span className="text-xs">U</span>
             </div>
           </div>

@@ -93,7 +93,7 @@ const AskPage = () => {
   }
 
   return (
-    <div className="px-5 md:pl-24 py-8 w-full flex flex-col bg-base-200">
+    <div className="flex-1 px-4 md:px-6 md:pl-24 py-8 w-full flex flex-col bg-base-200">
       <div className="mb-4">
         <BackButton />
       </div>
