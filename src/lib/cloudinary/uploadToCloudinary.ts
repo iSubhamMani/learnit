@@ -9,7 +9,7 @@ export const uploadToCloudinary = async (
     invalidate: true,
     resource_type: "image",
     filename_override: fileName,
-    folder: "learnit" + folderName,
+    folder: "learnit/" + folderName,
     use_filename: true,
   });
 
