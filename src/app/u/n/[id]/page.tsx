@@ -1,11 +1,14 @@
 "use client";
 
 import BackButton from "@/components/BackButton";
+import QuizCard from "@/components/QuizCard";
 import StyledButton from "@/components/StyledButton";
 import SummaryCard from "@/components/SummaryCard";
 import { NotebookData } from "@/interfaces/notebook.interface";
+import { Quiz } from "@/interfaces/quiz.interface";
 import { Summary } from "@/interfaces/summary.interface";
 import { getNotebookInfo } from "@/queries/notebook.queries";
+import { getAllQuizzes } from "@/queries/quiz.queries";
 import { getAllSummaries } from "@/queries/summary.queries";
 import axios from "axios";
 import { FileTextIcon, PuzzleIcon, RotateCcw } from "lucide-react";
@@ -30,8 +33,8 @@ const NotebookManagePage = ({ params }: { params: { id: string } }) => {
   });
 
   const {
-    isLoading,
-    isError,
+    isLoading: isSummaryLoading,
+    isError: isSummaryError,
     data: summaries,
   } = useInfiniteQuery({
     queryKey: ["summaries", { notebookId, pageSize: 4 }],
@@ -46,13 +49,30 @@ const NotebookManagePage = ({ params }: { params: { id: string } }) => {
     staleTime: 1000 * 60 * 10,
   });
 
+  const {
+    isLoading: isQuizLoading,
+    isError: isQuizError,
+    data: quizzes,
+  } = useInfiniteQuery({
+    queryKey: ["quizzes", { notebookId, pageSize: 4 }],
+    queryFn: ({ pageParam }) =>
+      getAllQuizzes({ pageParam, notebookId, pageSize: 4 }),
+    getNextPageParam: (lastPage) => {
+      if (lastPage.data.metadata.hasNextPage) {
+        return lastPage.data.metadata.page + 1;
+      }
+      return undefined;
+    },
+    staleTime: 1000 * 60 * 10,
+  });
+
   if (!notebookId) return;
 
   return (
-    <div className="flex-1 px-4 md:px-6 md:pl-24 py-8 w-full flex flex-col bg-base-200">
+    <div className="flex-1 px-4 md:px-6 md:pl-28 py-8 w-full flex flex-col bg-base-200">
       <div className="flex gap-3 items-center">
         <BackButton />
-        <h1 className="text-base-content text-xl font-medium">
+        <h1 className="text-xl md:text-2xl text-base-content font-bold tracking-tight">
           {notebookData?.data?.name}
         </h1>
         {infoLoading && (
@@ -105,7 +125,7 @@ const NotebookManagePage = ({ params }: { params: { id: string } }) => {
         <h1 className="text-base-content text-2xl font-medium">
           Recent summaries
         </h1>
-        {isLoading && (
+        {isSummaryLoading && (
           <div className="mt-4 flex justify-center">
             <div className="loading loading-spinner loading-sm text-primary"></div>
           </div>
@@ -117,7 +137,7 @@ const NotebookManagePage = ({ params }: { params: { id: string } }) => {
             });
           })}
         </div>
-        {!isLoading && !isError && (
+        {!isSummaryLoading && !isSummaryError && (
           <div className="mt-4 md:mt-6 flex justify-center">
             <Link href={`/u/n/${notebookId}/summaries`}>
               <StyledButton content="View all" />
@@ -127,6 +147,25 @@ const NotebookManagePage = ({ params }: { params: { id: string } }) => {
       </div>
       <div>
         <h1 className="text-base-content text-2xl font-medium">Your quizzes</h1>
+        {isQuizLoading && (
+          <div className="mt-4 flex justify-center">
+            <div className="loading loading-spinner loading-sm text-primary"></div>
+          </div>
+        )}
+        <div className="mt-2 md:mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          {quizzes?.pages.map((page) => {
+            return page.data.data.map((quiz: Quiz & { _id: string }) => {
+              return <QuizCard key={quiz._id} quiz={quiz} />;
+            });
+          })}
+        </div>
+        {!isQuizLoading && !isQuizError && (
+          <div className="mt-4 md:mt-6 flex justify-center">
+            <Link href={`/u/n/${notebookId}/quizzes`}>
+              <StyledButton content="View all" />
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   );
