@@ -57,17 +57,21 @@ const Summarize = ({ params }: { params: { id: string } }) => {
   }, [image]);
 
   useEffect(() => {
+    if (summary.length === 1) return;
+
+    const currentScrollPosition = window.scrollY;
+
     window.scrollTo({
-      top: document.body.scrollHeight,
+      top: currentScrollPosition + 200,
       behavior: "smooth",
     });
   }, [summary]);
 
   return (
-    <div className="flex-1 px-4 md:px-6 md:pl-24 py-8 lg:pb-12 w-full flex flex-col bg-base-200 relative">
+    <div className="flex-1 px-4 md:px-6 md:pl-28 py-8 lg:pb-12 w-full flex flex-col bg-base-200 relative">
       <div className="flex gap-3 items-center">
         <BackButton />
-        <h1 className="text-base-content text-xl md:text-2xl font-bold tracking-tight sm:text-4xl">
+        <h1 className="text-base-content text-xl md:text-2xl font-bold tracking-tight">
           Summarize your notes
         </h1>
       </div>
@@ -90,13 +94,13 @@ const Summarize = ({ params }: { params: { id: string } }) => {
           <div className="bg-gray-300 dark:bg-neutral/85 skeleton h-4 w-full mx-auto max-w-4xl"></div>
         </div>
       )}
-      <div className="z-50 fixed bottom-4 left-[50%] translate-x-[-50%] grid gap-4 transform active:scale-95 transition-transform duration-150">
+      <div className="z-50 fixed bottom-16 md:bottom-6 left-[50%] translate-x-[-50%] grid gap-4 transform active:scale-95 transition-transform duration-150">
         <div className="flex justify-center">
           <label
             className="shadow-xl dark:shadow-2xl text-primary-content rounded-full cursor-pointer"
             htmlFor="upload-file"
           >
-            <div className="flex items-center px-6 py-3 shadow-2xl bg-neutral dark:bg-neutral-content hover:bg-neutral/90 dark:hover:bg-neutral-content/90 rounded-full transition duration-200 ease-in-out">
+            <div className="flex items-center px-6 py-3 shadow-2xl bg-neutral dark:bg-neutral-200 hover:bg-neutral-800 dark:hover:bg-neutral-300 rounded-full transition duration-200 ease-in-out">
               {!uploading && (
                 <>
                   <span className="mr-2 font-medium text-neutral-content dark:text-neutral">

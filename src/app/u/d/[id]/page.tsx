@@ -132,13 +132,13 @@ const DiscussionPage = () => {
 
   if (isLoading)
     return (
-      <div className="flex-1 px-4 md:px-6 md:pl-24 py-8 w-full flex flex-col items-center justify-center bg-base-200">
+      <div className="flex-1 px-4 md:px-6 md:pl-28 py-8 w-full flex flex-col items-center justify-center bg-base-200">
         <div className="loading loading-spinner loading-sm text-primary"></div>
       </div>
     );
 
   return (
-    <div className="flex-1 px-4 md:px-6 md:pl-24 py-8 md:py-12 w-full flex flex-col bg-base-200">
+    <div className="flex-1 px-4 md:px-6 md:pl-28 py-8 md:py-12 w-full flex flex-col bg-base-200">
       <div className="mb-4">
         <BackButton />
       </div>
