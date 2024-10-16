@@ -35,27 +35,32 @@ export async function POST(req: NextRequest) {
       Please generate a quiz (10 questions) based on the provided points in the following list and if necessary include some questions that are not in the list but are related to the content: ${summaryContent}. The output should be structured as given in the example.
 
       **Example:**
-
-      [
-        {
-          "question": "Question 1",
-          "answers": [
-            "Answer 1",
-            "Answer 2",
-            "Answer 3"
-          ],
-          "correctAnswer": 0
-        },
-        {
+      
+      {
+        title: Title of the Quiz,
+        questions: [
+          {
+            "id": 1,
+            "question": "Question 1",
+            "answers": [
+              "Answer 1",
+              "Answer 2",
+              "Answer 3"
+            ],
+            "correctAnswer": 0
+          },
+          {
+            "id": 2,
             "question": "Question 2",
-          "answers": [
-            "Answer 1",
-            "Answer 2",
-            "Answer 3"
-          ],
-          "correctAnswer": 1
-        }
-      ]
+            "answers": [
+              "Answer 1",
+              "Answer 2",
+              "Answer 3"
+            ],
+            "correctAnswer": 1
+          }
+        ]
+      }
       
       **End of Example**
 
