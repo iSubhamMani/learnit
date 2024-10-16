@@ -16,8 +16,9 @@ export type ReplyData = Pick<
 > & {
   _id: string;
   repliedBy: {
+    _id: string;
     displayName: string;
-    photoURL: string;
+    profilePhoto: string;
     reputation: number;
   };
   replyCount: number;

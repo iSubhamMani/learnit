@@ -30,6 +30,6 @@ export type DiscussionCardData = Pick<
   askedBy: {
     _id: string;
     displayName: string;
-    photoURL: string;
+    profilePhoto: string;
   };
 };

@@ -18,11 +18,11 @@ const DiscussionCard = ({ discussion }: { discussion: DiscussionCardData }) => {
           </div>
           <div className="flex flex-wrap gap-3 my-2">
             <div className="flex items-center gap-2">
-              {discussion.askedBy.photoURL ? (
+              {discussion.askedBy.profilePhoto ? (
                 <div className="avatar">
                   <div className="ring-base-content ring-offset-base-100 ring-1 ring-offset-2 w-4 sm:w-6 rounded-full">
                     <Image
-                      src={discussion.askedBy.photoURL}
+                      src={discussion.askedBy.profilePhoto}
                       alt="avatar"
                       width={24}
                       height={24}

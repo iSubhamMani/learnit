@@ -16,7 +16,7 @@ const userSchema = new Schema<User>(
       type: String,
       required: false,
     },
-    photoURL: {
+    profilePhoto: {
       type: String,
       default: "",
     },

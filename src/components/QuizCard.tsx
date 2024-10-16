@@ -40,6 +40,7 @@ const QuizCard = ({ quiz }: { quiz: Quiz & { _id: string } }) => {
                     {question?.answers?.map((answer: string, index: number) => (
                       <div key={index} className="flex gap-2">
                         <input
+                          readOnly
                           type="radio"
                           value={index}
                           className="radio radio-primary"
