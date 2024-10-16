@@ -5,7 +5,7 @@ import Logout from "./Logout";
 
 const Navbar = () => {
   return (
-    <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r border-base-200 md:flex shadow-md bg-base-100">
+    <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col md:flex shadow-md border-r bg-base-100 dark:bg-base-300 border-gray-300 dark:border-gray-600">
       <nav className="flex flex-col items-center gap-2 px-2 sm:py-5">
         <Link href="/u/notebooks">
           <div

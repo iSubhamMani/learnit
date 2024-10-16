@@ -30,7 +30,7 @@ const ThemeSwitcher = () => {
   }, [theme]);
 
   return (
-    <label className="swap swap-rotate">
+    <label className="hover:scale-110 transition duration-200 ease-in-out md:hover:scale-100 swap swap-rotate">
       {/* this hidden checkbox controls the state */}
       <input
         onChange={handleToggle}
@@ -39,7 +39,7 @@ const ThemeSwitcher = () => {
       />
       {/* moon icon */}
       <svg
-        className="swap-off h-6 w-6 fill-base-content"
+        className="swap-off w-6 h-6 fill-base-content"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
       >
@@ -48,7 +48,7 @@ const ThemeSwitcher = () => {
 
       {/* sun icon */}
       <svg
-        className="swap-on h-6 w-6 fill-base-content"
+        className="swap-on w-6 h-6 fill-base-content"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
       >
