@@ -7,10 +7,10 @@ import { ApiSuccess } from "@/utils/ApiSuccess";
 import { ApiError } from "@/utils/ApiError";
 import { SummaryModel } from "@/models/summary.model";
 
-function fileToGenerativePart(path: any, mimeType: any) {
+function fileToGenerativePart(base64Data: string, mimeType: string) {
   return {
     inlineData: {
-      data: Buffer.from(fs.readFileSync(path)).toString("base64"),
+      data: base64Data,
       mimeType,
     },
   };
@@ -29,11 +29,7 @@ export async function POST(req: NextRequest) {
 
     const mediaPath = formData.get("mediaPath") as File;
     const buffer = Buffer.from(await mediaPath.arrayBuffer());
-    const filename = Date.now() + mediaPath.name.replaceAll(" ", "_");
-
-    const filePath = path.join(process.cwd(), "public/uploads/" + filename);
-
-    await writeFile(filePath, buffer);
+    const base64Data = buffer.toString("base64");
 
     const prompt = `
     Please analyze the provided image and generate a concise summary of its educational content. Focus on all the key points. The output should be formatted as given in the example, an array in which the first element is the topic and the rest are the key points.
@@ -44,16 +40,14 @@ export async function POST(req: NextRequest) {
   
     **End of Example:**
   
-    If the image does not contain any educational content return null
+    If the image does not contain any educational content return null in the response like this: null
     `;
 
-    const imagePart = fileToGenerativePart(`${filePath}`, mediaPath.type);
+    const imagePart = fileToGenerativePart(base64Data, mediaPath.type);
 
     const result = await model.generateContent([prompt, imagePart]);
-    fs.unlinkSync(filePath);
 
     if (result.response.text() !== "null") {
-      // TODO: Save summary to database
       await SummaryModel.create({
         content: result.response.text(),
         generatedBy: userId,
