@@ -137,7 +137,7 @@ export async function GET(req: NextRequest) {
                 askedBy: {
                   _id: 1,
                   displayName: 1,
-                  photoURL: 1,
+                  profilePhoto: 1,
                 },
                 createdAt: 1,
                 updatedAt: 1,

@@ -23,7 +23,7 @@ export async function GET(req: NextRequest) {
     const discussion = await DiscussionModel.findById(id).populate({
       path: "askedBy",
       model: UserModel,
-      select: "displayName photoURL _id reputation email",
+      select: "displayName profilePhoto _id reputation email",
     });
 
     if (!discussion) {
