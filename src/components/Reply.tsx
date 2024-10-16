@@ -16,9 +16,11 @@ import ReplyEdit from "./ReplyEdit";
 import useReplyReactions from "@/hooks/useReplyReactions";
 import useReplyActions from "@/hooks/useReplyActions";
 import ReplyDeleteModal from "./ReplyDeleteModal";
+import { useSession } from "next-auth/react";
 
 const Reply = ({ reply }: { reply: ReplyData }) => {
   const replyId = reply._id;
+  const userId = useSession().data?.user?._id;
 
   const [replyInputVisible, setReplyInputVisible] = useState<boolean>(false);
   const [replyEditVisible, setReplyEditVisible] = useState<boolean>(false);
@@ -58,11 +60,11 @@ const Reply = ({ reply }: { reply: ReplyData }) => {
       <div className="py-2">
         <div className="flex justify-between gap-2 items-center">
           <div className="flex gap-3 items-center">
-            {reply.repliedBy.photoURL ? (
+            {reply.repliedBy.profilePhoto ? (
               <div className="avatar">
                 <div className="ring-base-content ring-offset-base-100 ring-1 ring-offset-2 w-4 sm:w-6 rounded-full">
                   <Image
-                    src={reply.repliedBy.photoURL}
+                    src={reply.repliedBy.profilePhoto}
                     alt="avatar"
                     width={24}
                     height={24}
@@ -142,7 +144,7 @@ const Reply = ({ reply }: { reply: ReplyData }) => {
               />
             </div>
           </div>
-          {reply.status !== "deleted" && (
+          {reply.status !== "deleted" && reply.repliedBy._id === userId && (
             <div className="flex gap-3 items-center">
               <Pencil
                 onClick={() => {
