@@ -64,5 +64,6 @@ export const config = {
     "/api/notebook/:path*",
     "/api/summarize/:path*",
     "/api/summaries/:path*",
+    "/api/quiz/:path*",
   ],
 };
