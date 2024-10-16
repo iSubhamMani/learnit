@@ -8,7 +8,7 @@ const Logout = () => {
     <div
       onClick={() => signOut({ callbackUrl: "/signin" })}
       data-tip="Logout"
-      className="p-2 tooltip tooltip-right cursor-pointer rounded-md hover:bg-primary hover:bg-opacity-10"
+      className="tooltip tooltip-right"
     >
       <LogOut className="w-5 h-5 md:w-6 md:h-6 text-base-content" />
     </div>

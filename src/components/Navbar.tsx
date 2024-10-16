@@ -2,47 +2,70 @@ import { MessageCircle, Notebook } from "lucide-react";
 import ThemeSwitcher from "../components/ThemeSwitcher";
 import Link from "next/link";
 import Logout from "./Logout";
+import { useAppSelector } from "@/lib/store/hooks";
+import { CldImage } from "next-cloudinary";
 
 const Navbar = () => {
+  const { profilePhoto, displayName } = useAppSelector((state) => state.user);
+
   return (
-    <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col md:flex shadow-md border-r bg-base-100 dark:bg-base-300 border-gray-300 dark:border-gray-600">
-      <nav className="flex flex-col items-center gap-2 px-2 sm:py-5">
-        <Link href="/u/notebooks">
-          <div
-            className="p-2 tooltip tooltip-right cursor-pointer rounded-md hover:bg-primary hover:bg-opacity-10"
+    <aside className="fixed inset-y-0 left-4 top-8 z-50 hidden flex-col md:flex ">
+      <ul className="menu bg-base-100 dark:bg-white/10 rounded-box shadow-md">
+        <li>
+          <Link
+            href={"/u/notebooks"}
+            className="tooltip tooltip-right"
             data-tip="Notebooks"
           >
             <Notebook className="w-6 h-6 text-base-content" />
-          </div>
-        </Link>
-        <Link href="/u/discussions">
-          <div
-            className="p-2 tooltip tooltip-right cursor-pointer rounded-md hover:bg-primary hover:bg-opacity-10"
+          </Link>
+        </li>
+        <li>
+          <Link
+            href={"/u/discussions"}
+            className="tooltip tooltip-right"
             data-tip="Discussion Board"
           >
             <MessageCircle className="w-6 h-6 text-base-content" />
-          </div>
-        </Link>
-        <div
-          className="p-2 tooltip tooltip-right cursor-pointer rounded-md hover:bg-primary hover:bg-opacity-10"
-          data-tip="Profile"
-        >
-          <div className="avatar placeholder">
-            <div className="ring-base-content ring-offset-base-100 ring-1 ring-offset-2 bg-neutral text-neutral-content w-6 rounded-full">
-              <span className="text-xs">U</span>
-            </div>
-          </div>
-        </div>
-        <div
-          className="p-2 tooltip tooltip-right cursor-pointer rounded-md hover:bg-primary hover:bg-opacity-10"
-          data-tip="Theme"
-        >
+          </Link>
+        </li>
+        <li>
+          <Link
+            href={"/u/profile"}
+            className="tooltip tooltip-right"
+            data-tip="Profile"
+          >
+            {profilePhoto ? (
+              <div className="avatar pt-1">
+                <div className="w-6 ring-base-content ring-offset-base-100 ring-1 ring-offset-2 bg-neutral rounded-full">
+                  <CldImage
+                    width={24}
+                    height={24}
+                    src={profilePhoto}
+                    alt="avatar"
+                  />
+                </div>
+              </div>
+            ) : displayName ? (
+              <div className="avatar placeholder pt-1">
+                <div className="ring-base-content ring-offset-base-100 ring-1 ring-offset-2 bg-neutral text-neutral-content w-6 rounded-full">
+                  <span className="text-xs">
+                    {displayName?.charAt(0).toUpperCase()}
+                  </span>
+                </div>
+              </div>
+            ) : (
+              <div className="bg-gray-300 dark:bg-neutral/85 skeleton w-6 h-6 shrink-0 rounded-full"></div>
+            )}
+          </Link>
+        </li>
+        <li>
           <ThemeSwitcher />
-        </div>
-      </nav>
-      <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
-        <Logout />
-      </nav>
+        </li>
+        <li>
+          <Logout />
+        </li>
+      </ul>
     </aside>
   );
 };
