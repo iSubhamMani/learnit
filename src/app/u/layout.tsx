@@ -1,8 +1,8 @@
 "use client";
 
-import Navbar from "@/components/Navbar";
-import NavbarMobileBottom from "@/components/NavbarMobileBottom";
+import AppWrapper from "@/components/AppWrapper";
 import StoreProvider from "@/components/StoreProvider";
+import { SessionProvider } from "next-auth/react";
 import { QueryClient, QueryClientProvider } from "react-query";
 
 const queryClient = new QueryClient();
@@ -13,16 +13,12 @@ export default function AppLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="flex flex-col md:flex-row min-h-screen">
+    <SessionProvider>
       <StoreProvider>
         <QueryClientProvider client={queryClient}>
-          <Navbar />
-          <div className="bg-base-200 flex-1 md:flex-0 flex flex-col pb-10 md:pb-0">
-            {children}
-          </div>
-          <NavbarMobileBottom />
+          <AppWrapper>{children}</AppWrapper>
         </QueryClientProvider>
       </StoreProvider>
-    </div>
+    </SessionProvider>
   );
 }
