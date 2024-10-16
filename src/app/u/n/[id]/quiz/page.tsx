@@ -7,7 +7,7 @@ const Quiz = ({ params }: { params: { id: string } }) => {
     <div className="flex-1 px-4 md:px-6 md:pl-24 py-8 w-full flex flex-col bg-base-200">
       <div className="flex gap-3 items-center">
         <BackButton />
-        <h1 className="text-base-content text-xl md:text-2xl font-bold tracking-tight sm:text-4xl">
+        <h1 className="text-base-content text-xl md:text-2xl font-bold tracking-tight">
           Generate Quiz
         </h1>
       </div>
@@ -21,7 +21,7 @@ const Quiz = ({ params }: { params: { id: string } }) => {
           </div>
         </div>
         <div className="flex-[2]">
-          <QuizMain />
+          <QuizMain notebookId={params.id} />
         </div>
       </div>
     </div>
