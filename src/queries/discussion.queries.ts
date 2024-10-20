@@ -19,3 +19,15 @@ export async function getAllDiscussions({
 
   return res.data;
 }
+
+export async function deleteDiscussion(id: string) {
+  const res = await axios.delete(`/api/discussion/${id}`);
+
+  return res.data;
+}
+
+export async function editDiscussion(id: string) {
+  const res = await axios.post(`/api/discussion/${id}`);
+
+  return res.data;
+}
