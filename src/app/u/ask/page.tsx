@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import { useQueryClient } from "react-query";
 import { z } from "zod";
 
 const AskPage = () => {
@@ -38,6 +39,7 @@ const AskPage = () => {
   } = useTagInput();
 
   const router = useRouter();
+  const queryClient = useQueryClient();
   const [submitting, setSubmitting] = useState(false);
 
   const onSubmit = (formData: z.infer<typeof discussionSchema>) => {
@@ -72,6 +74,12 @@ const AskPage = () => {
         toast.success("Discussion posted successfully", {
           duration: 3000,
           position: "top-center",
+        });
+        queryClient.invalidateQueries({
+          queryKey: ["user-discussions"],
+        });
+        queryClient.invalidateQueries({
+          queryKey: ["discussions"],
         });
         router.replace("/u/discussions");
       }

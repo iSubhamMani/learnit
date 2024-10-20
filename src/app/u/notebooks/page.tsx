@@ -46,7 +46,7 @@ const NotebooksPage = () => {
           {notebooks?.pages[0].data.data.length === 0 && (
             <div className="flex flex-col items-center gap-2 mt-12 md:mt-20">
               <p className="text-center text-base-content text-lg font-medium">
-                No notebooks found
+                You haven&apos;t created any notebooks yet
               </p>
             </div>
           )}
@@ -65,29 +65,34 @@ const NotebooksPage = () => {
               </div>
             )}
 
-            {!isLoading && !isError && (
-              <div>
-                <div className="grid grid-cols-[1fr_150px] items-center border-b border-base-300 dark:border-gray-700 px-4 py-3 font-medium">
-                  <div className="font-bold text-base-content text-xs sm:text-sm">
-                    Name
-                  </div>
-                  <div className="font-bold text-right text-base-content text-xs sm:text-sm">
-                    Created
-                  </div>
-                </div>
+            {!isLoading &&
+              !isError &&
+              notebooks?.pages[0].data.data.length !== 0 && (
                 <div>
-                  {notebooks?.pages.map((group) => {
-                    return group.data.data.map(
-                      (notebook: NotebookData, i: number) => (
-                        <Link href={`/u/n/${notebook._id}`} key={notebook._id}>
-                          <NotebookCard index={i} notebook={notebook} />
-                        </Link>
-                      )
-                    );
-                  })}
+                  <div className="grid grid-cols-[1fr_150px] items-center border-b border-base-300 dark:border-gray-700 px-4 py-3 font-medium">
+                    <div className="font-bold text-base-content text-xs sm:text-sm">
+                      Name
+                    </div>
+                    <div className="font-bold text-right text-base-content text-xs sm:text-sm">
+                      Created
+                    </div>
+                  </div>
+                  <div>
+                    {notebooks?.pages.map((group) => {
+                      return group.data.data.map(
+                        (notebook: NotebookData, i: number) => (
+                          <Link
+                            href={`/u/n/${notebook._id}`}
+                            key={notebook._id}
+                          >
+                            <NotebookCard index={i} notebook={notebook} />
+                          </Link>
+                        )
+                      );
+                    })}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
 
             <div className="mt-4 flex justify-center">
               {hasNextPage && !isFetchingNextPage ? (
