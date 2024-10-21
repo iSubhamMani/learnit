@@ -46,7 +46,7 @@ const SigninForm = () => {
   return (
     <div className="mx-auto w-full max-w-lg">
       <div className="card bg-base-100 w-full shadow-xl">
-        <div className="card-body p-4 sm:p-6 md:p-8">
+        <div className="card-body p-6 md:p-8">
           <form
             onSubmit={handleSubmit(onSubmit)}
             className="flex flex-col gap-4"

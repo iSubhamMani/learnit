@@ -9,15 +9,15 @@ const Login = () => {
   const router = useRouter();
 
   return (
-    <div className="flex min-h-screen px-5 py-8 bg-base-200 w-full">
+    <div className="min-h-screen px-5 py-8 bg-base-200 w-full">
+      <header className="mx-auto max-w-7xl">
+        <Link href={"/"}>
+          <h1 className="text-2xl md:text-4xl font-bold text-primary">
+            LearnIt
+          </h1>
+        </Link>
+      </header>
       <div className="mx-auto w-full max-w-lg">
-        <header>
-          <section className="text-center mt-10 md:mt-16 space-y-1">
-            <h1 className="text-3xl md:text-5xl font-bold text-primary">
-              LearnIt
-            </h1>
-          </section>
-        </header>
         <main className="text-center my-10">
           <SigninForm />
           <div>
