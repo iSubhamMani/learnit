@@ -23,3 +23,13 @@ export const getNotebookInfo = async (notebookId: string) => {
 
   return res.data;
 };
+
+export const updateNotebook = async (notebookId: string, name: string) => {
+  const res = await axios.patch(`/api/notebook/${notebookId}`, { name });
+  return res.data;
+};
+
+export const deleteNotebook = async (notebookId: string) => {
+  const res = await axios.delete(`/api/notebook/${notebookId}`);
+  return res.data;
+};

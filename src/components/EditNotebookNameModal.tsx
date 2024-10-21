@@ -1,61 +1,71 @@
 "use client";
-
-import { createNotebook } from "@/queries/notebook.queries";
-import { FilePlus } from "lucide-react";
-import { useState } from "react";
+import { NotebookData } from "@/interfaces/notebook.interface";
+import { updateNotebook } from "@/queries/notebook.queries";
+import { PencilIcon } from "lucide-react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useMutation, useQueryClient } from "react-query";
 
-const NewNotebookModal = () => {
-  const queryClient = useQueryClient();
-  const [notebookName, setNotebookName] = useState<string>("");
+const EditNotebookNameModal = ({ notebook }: { notebook: NotebookData }) => {
+  const [notebookName, setNotebookName] = useState(notebook?.name);
 
-  const { mutate, isLoading, data } = useMutation({
-    mutationFn: () => createNotebook(notebookName),
+  const queryClient = useQueryClient();
+
+  const { mutate, isLoading: isUpdating } = useMutation({
+    mutationFn: () => updateNotebook(notebook?._id, notebookName),
     onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["notebookInfo", { notebookId: notebook?._id }],
+        exact: true,
+      });
+
       queryClient.invalidateQueries({
         queryKey: ["notebooks"],
       });
-      setNotebookName("");
+
       const modal = document.getElementById(
-        "create_notebook_modal"
+        `edit_notebook_modal-${notebook?._id}`
       )! as HTMLDialogElement;
       modal.close();
     },
     onError: () => {
-      toast.error("Error creating notebook", {
+      toast.error("Error updating notebook", {
         duration: 3000,
         position: "top-center",
       });
     },
   });
 
-  const handleCreateNotebook = () => {
+  const updateNotebookName = () => {
     if (!notebookName.trim()) return;
 
     mutate();
   };
 
+  useEffect(() => {
+    if (!notebook) return;
+    setNotebookName(notebook.name);
+  }, [notebook]);
+
   return (
     <div>
-      <button
+      <div
         onClick={() =>
           (
             document.getElementById(
-              "create_notebook_modal"
+              `edit_notebook_modal-${notebook?._id}`
             )! as HTMLDialogElement
           ).showModal()
         }
-        className="btn btn-md btn-primary"
       >
-        <FilePlus className="w-4 h-4 sm:w-5 sm:h-5" />
-        <span className="text-sm">Create</span>
-      </button>
-      <dialog id="create_notebook_modal" className="modal">
+        <PencilIcon className="cursor-pointer text-primary w-4 h-4 sm:w-6 sm:h-6" />
+      </div>
+      <dialog id={`edit_notebook_modal-${notebook?._id}`} className="modal">
         <div className="modal-box">
           <h3 className="text-lg md:text-xl text-base-content font-bold">
-            Create a new notebook
+            Edit Notebook Name
           </h3>
+
           <div className="my-6">
             <input
               value={notebookName}
@@ -65,11 +75,12 @@ const NewNotebookModal = () => {
               className="text-sm sm:text-base text-base-content input input-bordered w-full"
             />
           </div>
+
           <div className="flex justify-end gap-3">
             <button
               onClick={() => {
                 const modal = document.getElementById(
-                  "create_notebook_modal"
+                  `edit_notebook_modal-${notebook?._id}`
                 )! as HTMLDialogElement;
                 modal.close();
               }}
@@ -78,14 +89,14 @@ const NewNotebookModal = () => {
               Cancel
             </button>
             <button
-              disabled={isLoading}
-              onClick={handleCreateNotebook}
+              disabled={isUpdating}
+              onClick={updateNotebookName}
               className="btn btn-primary"
             >
-              {isLoading ? (
+              {isUpdating ? (
                 <div className="loading loading-spinner loading-sm text-primary"></div>
               ) : (
-                "Create"
+                "Update"
               )}
             </button>
           </div>
@@ -98,4 +109,4 @@ const NewNotebookModal = () => {
   );
 };
 
-export default NewNotebookModal;
+export default EditNotebookNameModal;

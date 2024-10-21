@@ -5,7 +5,7 @@ import NewNotebookModal from "@/components/NewNotebookModal";
 import NotebookCard from "@/components/NotebookCard";
 import { NotebookData } from "@/interfaces/notebook.interface";
 import { getAllNotebooks } from "@/queries/notebook.queries";
-import { RotateCcw } from "lucide-react";
+import { Delete, RotateCcw } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { useInfiniteQuery } from "react-query";
@@ -41,7 +41,7 @@ const NotebooksPage = () => {
         Your Notebooks
       </h1>
       <div className="mt-4">
-        <NewNotebookModal debouncedQuery={debouncedQuery} />
+        <NewNotebookModal />
         <div className="mt-4">
           {notebooks?.pages[0].data.data.length === 0 && (
             <div className="flex flex-col items-center gap-2 mt-12 md:mt-20">
@@ -73,7 +73,7 @@ const NotebooksPage = () => {
                     <div className="font-bold text-base-content text-xs sm:text-sm">
                       Name
                     </div>
-                    <div className="font-bold text-right text-base-content text-xs sm:text-sm">
+                    <div className="font-bold text-right text-base-content text-xs sm:text-sm mr-6 md:mr-8">
                       Created
                     </div>
                   </div>
@@ -81,12 +81,10 @@ const NotebooksPage = () => {
                     {notebooks?.pages.map((group) => {
                       return group.data.data.map(
                         (notebook: NotebookData, i: number) => (
-                          <Link
-                            href={`/u/n/${notebook._id}`}
+                          <NotebookCard
                             key={notebook._id}
-                          >
-                            <NotebookCard index={i} notebook={notebook} />
-                          </Link>
+                            notebook={notebook}
+                          />
                         )
                       );
                     })}

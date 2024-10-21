@@ -1,19 +1,17 @@
 "use client";
 
 import BackButton from "@/components/BackButton";
+import EditNotebookNameModal from "@/components/EditNotebookNameModal";
 import QuizCard from "@/components/QuizCard";
 import StyledButton from "@/components/StyledButton";
 import SummaryCard from "@/components/SummaryCard";
-import { NotebookData } from "@/interfaces/notebook.interface";
 import { Quiz } from "@/interfaces/quiz.interface";
 import { Summary } from "@/interfaces/summary.interface";
 import { getNotebookInfo } from "@/queries/notebook.queries";
 import { getAllQuizzes } from "@/queries/quiz.queries";
 import { getAllSummaries } from "@/queries/summary.queries";
-import axios from "axios";
-import { FileTextIcon, PuzzleIcon, RotateCcw } from "lucide-react";
+import { FileTextIcon, PuzzleIcon } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useInfiniteQuery, useQuery } from "react-query";
 
@@ -72,12 +70,15 @@ const NotebookManagePage = ({ params }: { params: { id: string } }) => {
     <div className="flex-1 px-4 md:px-6 md:pl-28 py-8 w-full flex flex-col bg-base-200">
       <div className="flex gap-3 items-center">
         <BackButton />
-        <h1 className="text-xl md:text-2xl text-base-content font-bold tracking-tight">
-          {notebookData?.data?.name}
-        </h1>
         {infoLoading && (
           <div className="bg-neutral-content skeleton h-4 w-full max-w-32"></div>
         )}
+        <div className="flex gap-4 items-center">
+          <h1 className="text-xl md:text-2xl text-base-content font-bold tracking-tight line-clamp-1 max-w-48 md:max-w-sm">
+            {notebookData?.data?.name}
+          </h1>
+          <EditNotebookNameModal notebook={notebookData?.data} />
+        </div>
       </div>
       <div className="flex flex-col sm:flex-row gap-4 my-4">
         <Link href={`/u/n/${notebookId}/summarize`}>
