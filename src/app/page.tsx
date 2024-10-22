@@ -1,7 +1,7 @@
-import StyledButton from "@/components/StyledButton";
 import Image from "next/image";
 import Link from "next/link";
 import homeDemo from "../../public/home-demo.png";
+import { MoveRight } from "lucide-react";
 
 const HomePage = () => {
   return (
@@ -21,7 +21,7 @@ const HomePage = () => {
           </div>
         </header>
         <main>
-          <p className="text-balance text-center md:text-6xl text-3xl mt-10 bg-gradient-to-br from-primary to-secondary bg-clip-text text-transparent font-bold">
+          <p className="relative text-balance text-center md:text-6xl text-3xl mt-10 bg-gradient-to-br from-primary to-secondary bg-clip-text text-transparent font-bold ">
             Organize Notes.
             <br />
             Generate AI Powered Summaries And Quizzes.
@@ -30,7 +30,13 @@ const HomePage = () => {
           </p>
           <div className="flex justify-center mt-10">
             <Link href={"/signup"}>
-              <StyledButton content="Create your first notebook" />
+              <div className="px-4 py-2 w-max flex gap-2 items-center rounded-full bg-primary bg-opacity-10 hover:bg-opacity-20 transform active:scale-95 transition duration-150">
+                <p className="text-primary text-base font-medium">
+                  Create Your First Notebook
+                </p>
+                <MoveRight className="w-5 h-5 text-primary" />
+                <i className="shine-btn"></i>
+              </div>
             </Link>
           </div>
           <div className="mockup-browser bg-base-content border my-10">
