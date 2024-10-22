@@ -18,7 +18,6 @@ import {
   setSubmitted,
   setUnanswered,
 } from "@/lib/store/features/quiz.slice";
-import { LoaderCircle } from "lucide-react";
 
 const QuizSummaryList = ({ notebookId }: { notebookId: string }) => {
   const [filter, setFilter] = useState<string>("");
@@ -104,13 +103,15 @@ const QuizSummaryList = ({ notebookId }: { notebookId: string }) => {
         )}
         <FormProvider {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
-            {summaries?.pages.map((page) => {
-              return page.data.data.map(
-                (summary: Summary & { _id: string; createdAt: Date }) => {
-                  return <SummaryCheckbox key={summary._id} data={summary} />;
-                }
-              );
-            })}
+            <div className="max-h-[200px] overflow-y-auto pr-4 border-b border-base-content/55">
+              {summaries?.pages.map((page) => {
+                return page.data.data.map(
+                  (summary: Summary & { _id: string; createdAt: Date }) => {
+                    return <SummaryCheckbox key={summary._id} data={summary} />;
+                  }
+                );
+              })}
+            </div>
             <div className="mt-4 flex justify-center">
               {hasNextPage && !isFetchingNextPage ? (
                 <LoadMoreButton clickHandler={fetchNextPage} />
