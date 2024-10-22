@@ -1,17 +1,16 @@
-import { LogOut, MessageCircle, Notebook } from "lucide-react";
+import { MessageCircle, Notebook } from "lucide-react";
 import Link from "next/link";
-import Logout from "./Logout";
 import ThemeSwitcher from "./ThemeSwitcher";
-import { signOut } from "next-auth/react";
 import { CldImage } from "next-cloudinary";
 import { useAppSelector } from "@/lib/store/hooks";
+import LogoutModalMobile from "./LogoutModalMobile";
 
 const NavbarMobileBottom = () => {
   const { profilePhoto, displayName } = useAppSelector((state) => state.user);
 
   return (
     <div className="fixed bottom-2 left-0 z-50 w-full md:hidden flex justify-center">
-      <ul className="menu menu-horizontal rounded-box bg-base-100/35 dark:bg-white/10 shadow-xl backdrop-blur-md">
+      <ul className="flex gap-1 menu menu-horizontal rounded-box bg-base-100/35 dark:bg-white/10 shadow-xl backdrop-blur-md">
         <li>
           <Link href={"/u/notebooks"}>
             <Notebook className="w-6 h-6 text-base-content" />
@@ -52,9 +51,7 @@ const NavbarMobileBottom = () => {
           <ThemeSwitcher />
         </li>
         <li>
-          <div onClick={() => signOut({ callbackUrl: "/signin" })}>
-            <LogOut className="w-6 h-6 text-base-content" />
-          </div>
+          <LogoutModalMobile />
         </li>
       </ul>
     </div>
