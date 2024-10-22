@@ -40,7 +40,10 @@ const SigninForm = () => {
       toast.error(result.error.toString());
     }
 
-    if (result?.url) router.replace("/u/notebooks");
+    if (result?.url) {
+      toast.success("Sign in successful");
+      router.replace("/u/notebooks");
+    }
   };
 
   return (
