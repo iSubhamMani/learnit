@@ -57,7 +57,7 @@ const Reply = ({ reply }: { reply: ReplyData }) => {
 
   return (
     <div>
-      <div className="py-2">
+      <div className="py-2 min-w-[250px]">
         <div className="flex justify-between gap-2 items-center">
           <div className="flex gap-3 items-center">
             {reply.repliedBy.profilePhoto ? (
