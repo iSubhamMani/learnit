@@ -94,10 +94,10 @@ const Summarize = ({ params }: { params: { id: string } }) => {
           <div className="bg-gray-300 dark:bg-neutral/85 skeleton h-4 w-full mx-auto max-w-4xl"></div>
         </div>
       )}
-      <div className="z-50 fixed bottom-16 md:bottom-6 left-[50%] translate-x-[-50%] grid gap-4 transform active:scale-95 transition-transform duration-150">
+      <div className="z-50 fixed bottom-20 md:bottom-6 left-[50%] translate-x-[-50%] grid gap-4 transform active:scale-95 transition-transform duration-150">
         <div className="flex justify-center">
           <label
-            className="shadow-xl dark:shadow-2xl text-primary-content rounded-full cursor-pointer"
+            className="shadow-md dark:shadow-2xl text-primary-content rounded-full cursor-pointer"
             htmlFor="upload-file"
           >
             <div className="flex items-center px-6 py-3 shadow-2xl bg-neutral dark:bg-neutral-200 hover:bg-neutral-800 dark:hover:bg-neutral-300 rounded-full transition duration-200 ease-in-out">
