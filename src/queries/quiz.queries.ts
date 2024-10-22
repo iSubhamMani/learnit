@@ -17,3 +17,8 @@ export const getAllQuizzes = async ({
 
   return res.data;
 };
+
+export const deleteQuiz = async (id: string) => {
+  const res = await axios.delete(`/api/quiz/delete/${id}`);
+  return res.data;
+};

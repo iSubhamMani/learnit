@@ -31,3 +31,8 @@ export const getSummary = async (image: File, notebookId: string) => {
 
   return res.data;
 };
+
+export const deleteSummary = async (id: string) => {
+  const res = await axios.delete(`/api/summaries/delete/${id}`);
+  return res.data;
+};
