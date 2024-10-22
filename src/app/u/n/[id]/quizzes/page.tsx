@@ -18,6 +18,7 @@ const AllQuizzes = ({ params }: { params: { id: string } }) => {
 
   const {
     isLoading,
+    isRefetching,
     hasNextPage,
     isFetchingNextPage,
     fetchNextPage,
@@ -59,7 +60,7 @@ const AllQuizzes = ({ params }: { params: { id: string } }) => {
           <Search className="text-base-content w-5 h-5" />
         </label>
       </div>
-      {isLoading && (
+      {(isLoading || isRefetching) && (
         <div className="mt-4 flex justify-center">
           <div className="loading loading-spinner loading-sm text-primary"></div>
         </div>

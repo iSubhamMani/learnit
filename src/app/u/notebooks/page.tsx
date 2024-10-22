@@ -20,6 +20,7 @@ const NotebooksPage = () => {
     hasNextPage,
     isFetchingNextPage,
     isLoading,
+    isRefetching,
     isError,
     data: notebooks,
   } = useInfiniteQuery({
@@ -45,13 +46,13 @@ const NotebooksPage = () => {
         <div className="mt-4">
           {notebooks?.pages[0].data.data.length === 0 && (
             <div className="flex flex-col items-center gap-2 mt-12 md:mt-20">
-              <p className="text-center text-base-content text-lg font-medium">
+              <p className="text-center text-base-content text-base md:text-lg font-medium">
                 You haven&apos;t created any notebooks yet
               </p>
             </div>
           )}
           <div className="mt-6 md:mt-10">
-            {isLoading && (
+            {(isLoading || isRefetching) && (
               <div className="mt-4 flex justify-center">
                 <div className="loading loading-spinner loading-sm text-primary"></div>
               </div>

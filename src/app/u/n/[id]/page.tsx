@@ -32,6 +32,7 @@ const NotebookManagePage = ({ params }: { params: { id: string } }) => {
 
   const {
     isLoading: isSummaryLoading,
+    isRefetching: isSummaryRefetching,
     isError: isSummaryError,
     data: summaries,
   } = useInfiniteQuery({
@@ -49,6 +50,7 @@ const NotebookManagePage = ({ params }: { params: { id: string } }) => {
 
   const {
     isLoading: isQuizLoading,
+    isRefetching: isQuizRefetching,
     isError: isQuizError,
     data: quizzes,
   } = useInfiniteQuery({
@@ -126,7 +128,7 @@ const NotebookManagePage = ({ params }: { params: { id: string } }) => {
         <h1 className="text-base-content text-2xl font-medium">
           Recent summaries
         </h1>
-        {isSummaryLoading && (
+        {(isSummaryLoading || isSummaryRefetching) && (
           <div className="mt-4 flex justify-center">
             <div className="loading loading-spinner loading-sm text-primary"></div>
           </div>
@@ -138,17 +140,26 @@ const NotebookManagePage = ({ params }: { params: { id: string } }) => {
             });
           })}
         </div>
-        {!isSummaryLoading && !isSummaryError && (
-          <div className="mt-4 md:mt-6 flex justify-center">
-            <Link href={`/u/n/${notebookId}/summaries`}>
-              <StyledButton content="View all" />
-            </Link>
+        {summaries?.pages[0].data.data.length === 0 && (
+          <div className="my-6">
+            <p className="text-sm text-base-content/80 text-center font-medium">
+              You haven&apos;t generated any summaries
+            </p>
           </div>
         )}
+        {!isSummaryLoading &&
+          !isSummaryError &&
+          summaries?.pages[0].data.data.length !== 0 && (
+            <div className="mt-4 md:mt-6 flex justify-center">
+              <Link href={`/u/n/${notebookId}/summaries`}>
+                <StyledButton content="View all" />
+              </Link>
+            </div>
+          )}
       </div>
       <div>
         <h1 className="text-base-content text-2xl font-medium">Your quizzes</h1>
-        {isQuizLoading && (
+        {(isQuizLoading || isQuizRefetching) && (
           <div className="mt-4 flex justify-center">
             <div className="loading loading-spinner loading-sm text-primary"></div>
           </div>
@@ -160,13 +171,22 @@ const NotebookManagePage = ({ params }: { params: { id: string } }) => {
             });
           })}
         </div>
-        {!isQuizLoading && !isQuizError && (
-          <div className="mt-4 md:mt-6 flex justify-center">
-            <Link href={`/u/n/${notebookId}/quizzes`}>
-              <StyledButton content="View all" />
-            </Link>
+        {quizzes?.pages[0].data.data.length === 0 && (
+          <div className="my-6">
+            <p className="text-sm text-base-content/80 text-center font-medium">
+              You haven&apos;t created any quiz
+            </p>
           </div>
         )}
+        {!isQuizLoading &&
+          !isQuizError &&
+          quizzes?.pages[0].data.data.length !== 0 && (
+            <div className="mt-4 md:mt-6 flex justify-center">
+              <Link href={`/u/n/${notebookId}/quizzes`}>
+                <StyledButton content="View all" />
+              </Link>
+            </div>
+          )}
       </div>
     </div>
   );
