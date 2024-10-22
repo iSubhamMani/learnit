@@ -15,9 +15,9 @@ export async function GET(req: NextRequest) {
   try {
     const url = new URL(req.url);
     const id = url.pathname.split("/")[3];
-    const userId = req.headers.get("user-id");
+    const session = await getServerSession(authOptions);
 
-    if (!userId) {
+    if (!session?.user) {
       return NextResponse.json(new ApiError(401, "Unauthorized"), {
         status: 401,
       });
@@ -38,9 +38,11 @@ export async function GET(req: NextRequest) {
     let userReaction = null;
 
     if (discussion) {
-      if (discussion.likes.some((id) => id.toString() === userId)) {
+      if (discussion.likes.some((id) => id.toString() === session?.user._id)) {
         userReaction = "like";
-      } else if (discussion.dislikes.some((id) => id.toString() === userId)) {
+      } else if (
+        discussion.dislikes.some((id) => id.toString() === session?.user._id)
+      ) {
         userReaction = "dislike";
       }
     }

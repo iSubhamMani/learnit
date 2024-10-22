@@ -3,14 +3,23 @@ import { NoteBookModel } from "@/models/notebook.model";
 import { ApiError } from "@/utils/ApiError";
 import { ApiSuccess } from "@/utils/ApiSuccess";
 import mongoose from "mongoose";
+import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
+import { authOptions } from "../auth/[...nextauth]/options";
 
 export async function POST(req: NextRequest) {
   await connectDB();
 
   try {
     const data = await req.json();
-    const userId = req.headers.get("user-id");
+    const session = await getServerSession(authOptions);
+
+    if (!session?.user) {
+      return NextResponse.json(new ApiError(401, "Unauthorized"), {
+        status: 401,
+      });
+    }
+    const userId = session.user._id;
 
     if (!data) {
       return NextResponse.json(new ApiError(400, "Invalid request body"), {
@@ -42,7 +51,15 @@ export async function GET(req: NextRequest) {
   await connectDB();
 
   try {
-    const userId = req.headers.get("user-id");
+    const session = await getServerSession(authOptions);
+
+    if (!session?.user) {
+      return NextResponse.json(new ApiError(401, "Unauthorized"), {
+        status: 401,
+      });
+    }
+    const userId = session.user._id;
+
     const url = new URL(req.url);
     const page = parseInt(url.searchParams.get("page") as string);
     const pageSize = 10;

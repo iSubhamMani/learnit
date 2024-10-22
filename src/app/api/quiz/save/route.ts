@@ -2,20 +2,23 @@ import { connectDB } from "@/lib/db";
 import { QuizModel } from "@/models/quiz.model";
 import { ApiError } from "@/utils/ApiError";
 import { ApiSuccess } from "@/utils/ApiSuccess";
+import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
+import { authOptions } from "../../auth/[...nextauth]/options";
 
 export async function POST(req: NextRequest) {
   await connectDB();
 
   try {
     const { questions, answers, notebook, title } = await req.json();
-    const userId = req.headers.get("user-id");
+    const session = await getServerSession(authOptions);
 
-    if (!userId) {
+    if (!session?.user) {
       return NextResponse.json(new ApiError(401, "Unauthorized"), {
         status: 401,
       });
     }
+    const userId = session.user._id;
 
     if (!questions || !answers) {
       return NextResponse.json(new ApiError(400, "Invalid request body"), {

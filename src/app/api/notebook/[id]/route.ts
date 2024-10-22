@@ -13,7 +13,15 @@ export async function GET(req: NextRequest) {
   await connectDB();
 
   try {
-    const userId = req.headers.get("user-id");
+    const session = await getServerSession(authOptions);
+
+    if (!session?.user) {
+      return NextResponse.json(new ApiError(401, "Unauthorized"), {
+        status: 401,
+      });
+    }
+    const userId = session.user._id;
+
     const url = new URL(req.url);
     const notebookId = url.pathname.split("/")[3];
 

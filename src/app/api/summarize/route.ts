@@ -6,6 +6,8 @@ import path from "path";
 import { ApiSuccess } from "@/utils/ApiSuccess";
 import { ApiError } from "@/utils/ApiError";
 import { SummaryModel } from "@/models/summary.model";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../auth/[...nextauth]/options";
 
 function fileToGenerativePart(base64Data: string, mimeType: string) {
   return {
@@ -18,8 +20,16 @@ function fileToGenerativePart(base64Data: string, mimeType: string) {
 
 export async function POST(req: NextRequest) {
   try {
+    const session = await getServerSession(authOptions);
+
+    if (!session?.user) {
+      return NextResponse.json(new ApiError(401, "Unauthorized"), {
+        status: 401,
+      });
+    }
+    const userId = session.user._id;
+
     const formData = await req.formData();
-    const userId = req.headers.get("user-id");
     const notebookId = formData.get("notebookId") as string;
 
     const genAI = new GoogleGenerativeAI(

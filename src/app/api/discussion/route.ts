@@ -6,13 +6,22 @@ import { ApiError } from "@/utils/ApiError";
 import { ApiSuccess } from "@/utils/ApiSuccess";
 import { uploadToCloudinary } from "@/lib/cloudinary/uploadToCloudinary";
 import { NextRequest, NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../auth/[...nextauth]/options";
 
 export async function POST(req: NextRequest) {
   await connectDB();
 
   try {
+    const session = await getServerSession(authOptions);
+
+    if (!session?.user) {
+      return NextResponse.json(new ApiError(401, "Unauthorized"), {
+        status: 401,
+      });
+    }
+
     const formData = await req.formData();
-    const userId = req.headers.get("user-id");
     const title = formData.get("title");
     const description = formData.get("description");
     const tags = JSON.parse(formData.get("tags") as string);
@@ -67,7 +76,7 @@ export async function POST(req: NextRequest) {
       title,
       description,
       tags,
-      askedBy: userId,
+      askedBy: session.user._id,
       attachment: attachmentUrl,
     });
 

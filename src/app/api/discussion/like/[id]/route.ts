@@ -1,7 +1,9 @@
+import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import { connectDB } from "@/lib/db";
 import { DiscussionModel } from "@/models/discussion.model";
 import { ApiError } from "@/utils/ApiError";
 import { ApiSuccess } from "@/utils/ApiSuccess";
+import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function PATCH(req: NextRequest) {
@@ -10,8 +12,14 @@ export async function PATCH(req: NextRequest) {
   try {
     const url = new URL(req.url);
     const id = url.pathname.split("/")[4];
-    const userId = req.headers.get("user-id");
+    const session = await getServerSession(authOptions);
 
+    if (!session?.user) {
+      return NextResponse.json(new ApiError(401, "Unauthorized"), {
+        status: 401,
+      });
+    }
+    const userId = session.user._id;
     // check if like already exists
 
     const existingLike = await DiscussionModel.findOne({
