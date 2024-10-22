@@ -8,6 +8,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { authOptions } from "../../auth/[...nextauth]/options";
 import { discussionSchema, tagSchema } from "@/schemas/DiscussionSchema";
 import { uploadToCloudinary } from "@/lib/cloudinary/uploadToCloudinary";
+import { deleteFromCloudinary } from "@/lib/cloudinary/deleteFromCloudinary";
+import mongoose from "mongoose";
 
 export async function GET(req: NextRequest) {
   await connectDB();
@@ -65,6 +67,8 @@ export async function GET(req: NextRequest) {
 export async function DELETE(req: NextRequest) {
   await connectDB();
 
+  const transaction = await mongoose.startSession();
+
   try {
     const url = new URL(req.url);
     const id = url.pathname.split("/").pop();
@@ -96,21 +100,38 @@ export async function DELETE(req: NextRequest) {
       });
     }
 
+    transaction.startTransaction();
+
+    if (discussion.attachment !== null || discussion.attachment !== "") {
+      const attachmentPublicId =
+        "learnit" +
+        discussion.attachment!.split("learnit").pop()!.split(".")[0];
+
+      await deleteFromCloudinary(attachmentPublicId);
+    }
+
     await DiscussionModel.findByIdAndDelete(id);
+
+    await transaction.commitTransaction();
 
     return NextResponse.json(
       new ApiSuccess(200, "Discussion deleted successfully", discussion),
       { status: 200 }
     );
   } catch (error: any) {
+    await transaction.abortTransaction();
     return NextResponse.json(new ApiError(500, error.message), {
       status: 500,
     });
+  } finally {
+    await transaction.endSession();
   }
 }
 
-export async function POST(req: NextRequest) {
+export async function PATCH(req: NextRequest) {
   await connectDB();
+
+  const transaction = await mongoose.startSession();
 
   try {
     const url = new URL(req.url);
@@ -147,6 +168,9 @@ export async function POST(req: NextRequest) {
     const description = formData.get("description");
     const tags = JSON.parse(formData.get("tags") as string);
     const attachment = formData.get("attachment") as File | null;
+    const imageSrc = formData.get("imageSrc") as string;
+
+    console.log(imageSrc);
 
     const { success } = discussionSchema.safeParse({
       title,
@@ -161,23 +185,24 @@ export async function POST(req: NextRequest) {
       });
     }
 
+    transaction.startTransaction();
+
     let attachmentUrl = null;
 
-    if (attachment) {
-      const fileBuffer = await attachment.arrayBuffer();
+    console.log(attachment);
 
-      const mimeType = attachment.type;
+    if (attachment) {
+      console.log("Attachment hai");
+      const fileBuffer = await attachment!.arrayBuffer();
+
+      const mimeType = attachment!.type;
       const encoding = "base64";
       const base64Data = Buffer.from(fileBuffer).toString("base64");
 
       // this will be used to upload the file
       const fileUri = "data:" + mimeType + ";" + encoding + "," + base64Data;
 
-      const res = await uploadToCloudinary(
-        fileUri,
-        attachment.name,
-        "attachments"
-      );
+      const res = await uploadToCloudinary(fileUri, "attachments");
 
       if (!res) {
         return NextResponse.json(
@@ -189,6 +214,26 @@ export async function POST(req: NextRequest) {
       }
 
       attachmentUrl = res.secure_url;
+
+      console.log(discussion.attachment);
+
+      if (discussion.attachment !== null) {
+        console.log("old attachment hai");
+        const attachmentPublicId =
+          "learnit" +
+          discussion.attachment!.split("learnit").pop()!.split(".")[0];
+
+        await deleteFromCloudinary(attachmentPublicId);
+      }
+    } else {
+      console.log("Attachment nahi hai");
+      if (discussion.attachment !== null) {
+        const attachmentPublicId =
+          "learnit" +
+          discussion.attachment!.split("learnit").pop()!.split(".")[0];
+
+        await deleteFromCloudinary(attachmentPublicId);
+      }
     }
 
     const updatedDiscussion = await DiscussionModel.findByIdAndUpdate(id, {
@@ -207,13 +252,18 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    await transaction.commitTransaction();
+
     return NextResponse.json(
       new ApiSuccess(200, "Discussion updated successfully", updatedDiscussion),
       { status: 200 }
     );
   } catch (error: any) {
+    await transaction.abortTransaction();
     return NextResponse.json(new ApiError(500, error.message), {
       status: 500,
     });
+  } finally {
+    await transaction.endSession();
   }
 }

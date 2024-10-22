@@ -122,8 +122,14 @@ const EditDiscussion = () => {
 
     formData.set("tags", JSON.stringify(discussionData.tags));
 
+    if (imageSrc) {
+      formData.set("imageSrc", imageSrc);
+    } else {
+      formData.set("imageSrc", "null");
+    }
+
     try {
-      const response = await axios.post(
+      const response = await axios.patch(
         `/api/discussion/${discussionId}`,
         formData
       );
