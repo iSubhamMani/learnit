@@ -59,11 +59,7 @@ export async function POST(req: NextRequest) {
       // this will be used to upload the file
       const fileUri = "data:" + mimeType + ";" + encoding + "," + base64Data;
 
-      const res = await uploadToCloudinary(
-        fileUri,
-        photo.name,
-        "profile-photos"
-      );
+      const res = await uploadToCloudinary(fileUri, "profile-photos");
 
       if (!res) {
         return NextResponse.json(
