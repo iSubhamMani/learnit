@@ -1,13 +1,9 @@
 "use client";
 
 import SigninForm from "@/components/SigninForm";
-import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 
 const Login = () => {
-  const router = useRouter();
-
   return (
     <div className="min-h-screen px-5 py-8 bg-base-200 w-full">
       <header className="mx-auto max-w-7xl">
