@@ -99,8 +99,8 @@ const ProfilePage = () => {
         {discussions?.pages[0].data.data.length === 0 && (
           <div className="mt-4">
             <div className="flex flex-col items-center gap-2 mt-12 md:mt-20">
-              <p className="text-center text-base-content text-lg font-medium">
-                You havent&apos;t created any discussions yet
+              <p className="text-center text-base-content text-base md:text-base font-medium">
+                You havent&apos;t started any discussions yet
               </p>
               <Link className="mt-2" href="/u/ask">
                 <StyledButton content="Start a discussion" />
