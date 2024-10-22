@@ -47,3 +47,51 @@ body {
     opacity: 1;
   }
 }
+
+/* Shine effect */
+.shine-btn {
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  left: 0;
+
+  /* Gradient */
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.03) 1%,
+    rgba(255, 255, 255, 0.6) 30%,
+    rgb(255, 255, 255) 50%,
+    rgba(255, 255, 255, 0.961) 70%,
+    rgba(255, 255, 255, 0.85) 71%,
+    rgba(255, 255, 255, 0) 100%
+  );
+
+  /* Shine element properties */
+  width: 15%;
+  height: 100%;
+  transform: skew(-10deg, 0deg);
+
+  /* Animation */
+  animation: move 2s infinite 1s;
+}
+
+/* Keyframe animations */
+@keyframes move {
+  0% {
+    left: 0;
+    opacity: 0;
+  }
+  5% {
+    opacity: 0;
+  }
+  48% {
+    opacity: 0.2;
+  }
+  80% {
+    opacity: 0;
+  }
+  100% {
+    left: 82%;
+  }
+}
