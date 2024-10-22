@@ -1,5 +1,4 @@
 import { getReplies } from "@/queries/replies.queries";
-import { RotateCcw } from "lucide-react";
 import { useInfiniteQuery } from "react-query";
 import Reply from "./Reply";
 import { ReplyData } from "@/interfaces/reply.interface";
@@ -58,7 +57,7 @@ const RepliesToReply = ({
         {replies?.pages.map((group, i) => {
           return group.data.data.map((reply: ReplyData) => (
             <div
-              className="py-1 ml-6 pl-4 border-l-2 border-base-content/35"
+              className=" overflow-x-auto py-1 ml-6 pl-4 border-l-2 border-base-content/35"
               key={reply._id}
             >
               <Reply reply={reply} />
