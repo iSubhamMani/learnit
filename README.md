@@ -17,5 +17,8 @@ https://learnit-tawny.vercel.app/
 
 ## Screenshots
 
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+![App Screenshot](https://res.cloudinary.com/dutdeodcv/image/upload/v1730917759/learnit/github_ss/tnxrx2guxdhelal2kel1.png)
+![App Screenshot](https://res.cloudinary.com/dutdeodcv/image/upload/v1730917451/learnit/github_ss/qsbv1gkkmw0hjulizdmh.png)
+![App Screenshot](https://res.cloudinary.com/dutdeodcv/image/upload/v1730917451/learnit/github_ss/siuy1doqbfklvw3lbjgz.png)
+![App Screenshot](https://res.cloudinary.com/dutdeodcv/image/upload/v1730917451/learnit/github_ss/eplfsfawvmzkkl0wc492.png)
 
