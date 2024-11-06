@@ -9,10 +9,10 @@ https://learnit-tawny.vercel.app/
 
 ## Features
 
-- Light/dark mode toggle
 - Generate content summaries from notes
 - Generate test quizzes from summaries
 - Discussion Board to foster collaborative learning
+- Light/dark mode toggle
 
 
 ## Screenshots
