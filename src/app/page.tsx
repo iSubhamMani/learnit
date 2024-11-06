@@ -41,7 +41,7 @@ const HomePage = () => {
           </div>
           <div className="mockup-browser bg-base-content border my-10">
             <div className="mockup-browser-toolbar">
-              <div className="input text-base-content">https://learnit.com</div>
+              <div className="input text-base-content">learnit-tawny.vercel.app</div>
             </div>
             <div className="bg-base-300 flex justify-center">
               <Image className="w-full" src={homeDemo} alt="LearnIt Homepage" />
