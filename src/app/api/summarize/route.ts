@@ -56,18 +56,19 @@ export async function POST(req: NextRequest) {
     const imagePart = fileToGenerativePart(base64Data, mediaPath.type);
 
     const result = await model.generateContent([prompt, imagePart]);
+    const cleanedData = result.response
+      .text()
+      .replace(/```json\s*|\s*```/g, "");
 
     if (result.response.text() !== "null") {
       await SummaryModel.create({
-        content: result.response.text(),
+        content: cleanedData,
         generatedBy: userId,
         notebook: notebookId,
       });
     }
 
-    return NextResponse.json(
-      new ApiSuccess(200, "Success", result.response.text())
-    );
+    return NextResponse.json(new ApiSuccess(200, "Success", cleanedData));
   } catch (error: any) {
     return NextResponse.json(new ApiError(500, error.message), {
       status: 500,

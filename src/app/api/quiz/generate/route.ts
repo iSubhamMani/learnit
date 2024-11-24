@@ -75,12 +75,7 @@ export async function POST(req: NextRequest) {
         new ApiSuccess(
           200,
           "Quiz generated successfully",
-          JSON.parse(
-            result.response
-              .text()
-              .replace(/```json\s*/, "")
-              .replace(/\s*```$/, "")
-          )
+          JSON.parse(result.response.text().replace(/```json\s*|\s*```/g, ""))
         )
       );
     }
