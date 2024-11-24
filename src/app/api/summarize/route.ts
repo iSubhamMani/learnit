@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
     const genAI = new GoogleGenerativeAI(
       process.env.NEXT_PUBLIC_GOOGLE_AI_API_KEY!
     );
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-8b" });
 
     const mediaPath = formData.get("mediaPath") as File;
     const buffer = Buffer.from(await mediaPath.arrayBuffer());
