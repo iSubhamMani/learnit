@@ -22,6 +22,9 @@ const HomePage = () => {
         </header>
         <main>
           <p className="relative text-balance text-center md:text-6xl text-3xl mt-10 bg-gradient-to-br from-primary to-secondary bg-clip-text text-transparent font-bold ">
+            Learn 10x faster.
+          </p>
+          <p className="relative text-balance text-center text-xl mt-10 text-primary font-bold ">
             Organize Notes.
             <br />
             Generate AI Powered Summaries And Quizzes.
@@ -41,7 +44,9 @@ const HomePage = () => {
           </div>
           <div className="mockup-browser bg-base-content border my-10">
             <div className="mockup-browser-toolbar">
-              <div className="input text-base-content">learnit-tawny.vercel.app</div>
+              <div className="input text-base-content">
+                learnit-tawny.vercel.app
+              </div>
             </div>
             <div className="bg-base-300 flex justify-center">
               <Image className="w-full" src={homeDemo} alt="LearnIt Homepage" />
