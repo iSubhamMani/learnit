@@ -11,7 +11,7 @@ export async function connectDB() {
 
   try {
     const connectionInstance = await mongoose.connect(
-      process.env.NEXT_PUBLIC_MONGODB_URI + "/test" || ""
+      process.env.MONGODB_URI + "/test" || ""
     );
     connection.isConnected = connectionInstance.connections[0].readyState;
   } catch (error) {

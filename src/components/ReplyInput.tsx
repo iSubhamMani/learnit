@@ -18,7 +18,6 @@ const ReplyInput = ({
   return (
     <div className="flex items-center gap-3">
       <input
-        autoFocus
         onChange={(e) => stateAction(e.target.value)}
         value={stateValue}
         type="text"

@@ -41,7 +41,7 @@ const SigninForm = () => {
     }
 
     if (result?.url) {
-      toast.success("Sign in successful");
+      toast.success("Sign in successfull");
       router.replace("/u/notebooks");
     }
   };
