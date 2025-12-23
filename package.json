@@ -19,7 +19,7 @@
     "firebase": "^10.12.4",
     "lucide-react": "^0.417.0",
     "mongoose": "^8.5.2",
-    "next": "14.2.5",
+    "next": "14.2.35",
     "next-auth": "^4.24.7",
     "next-cloudinary": "^6.10.0",
     "react": "^18",
