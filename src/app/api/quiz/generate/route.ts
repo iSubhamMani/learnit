@@ -22,11 +22,11 @@ export async function POST(req: NextRequest) {
           const { points } = parseData(summary.content);
           summaryContent.push(...points);
         }
-      })
+      }),
     );
 
     const genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_API_KEY!);
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-8b" });
+    const model = genAI.getGenerativeModel({ model: "gemini-3-flash-preview" });
 
     const prompt = `
       
@@ -73,8 +73,8 @@ export async function POST(req: NextRequest) {
         new ApiSuccess(
           200,
           "Quiz generated successfully",
-          JSON.parse(result.response.text().replace(/```json\s*|\s*```/g, ""))
-        )
+          JSON.parse(result.response.text().replace(/```json\s*|\s*```/g, "")),
+        ),
       );
     }
 
